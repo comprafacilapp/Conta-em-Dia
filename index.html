@@ -880,7 +880,9 @@ item.descricao +
 " — " +
 dinheiro(Number(item.valor)) +
 " — " +
-(item.data || "Data não informada");
+(item.data
+? item.data.split("-").reverse().join("/")
+: "Data não informada");
 
 lista.appendChild(linha);
 
@@ -901,7 +903,9 @@ item.descricao +
 " — " +
 dinheiro(Number(item.valor)) +
 " — " +
-(item.data || "Data não informada");
+(item.data
+? item.data.split("-").reverse().join("/")
+: "Data não informada");
 
 lista.appendChild(linha);
 
@@ -922,7 +926,9 @@ item.nome +
 " — " +
 dinheiro(Number(item.valor)) +
 " — " +
-(item.data || "Data não informada");
+(item.data
+? item.data.split("-").reverse().join("/")
+: "Data não informada");
 
 lista.appendChild(linha);
 
