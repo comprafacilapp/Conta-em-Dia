@@ -884,8 +884,32 @@ dinheiro(Number(item.valor)) +
 ? item.data.split("-").reverse().join("/")
 : "Data não informada");
 
-lista.appendChild(linha);
 
+let botao =
+document.createElement("button");
+
+botao.innerText = "🗑️ Excluir";
+
+botao.onclick = function() {
+
+if (confirm("Excluir esta entrada?")) {
+
+entradas.splice(
+entradas.indexOf(item),
+1
+);
+
+salvarDados();
+mostrarHistoricoInterno();
+atualizarTela();
+
+}
+
+};
+
+linha.appendChild(botao);
+
+lista.appendChild(linha);
 });
 
 
