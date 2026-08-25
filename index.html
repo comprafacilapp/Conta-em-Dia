@@ -1,175 +1,933 @@
+Ele já inclui HTML + visual + JavaScript, tudo no mesmo index.html:
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Conta em Dia</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conta em Dia</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #eef2f3;
-    }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #eef2f3;
+}
 
-    .app {
-      max-width: 430px;
-      min-height: 100vh;
-      margin: auto;
-      background: white;
-    }
+.app {
+  max-width: 430px;
+  min-height: 100vh;
+  margin: auto;
+  background: white;
+}
 
-    header {
-      background: #1f6f5c;
-      color: white;
-      text-align: center;
-      padding: 28px 20px;
-    }
+header {
+  background: #1f6f5c;
+  color: white;
+  text-align: center;
+  padding: 28px 20px;
+}
 
-    header h1 {
-      margin: 0;
-      font-size: 30px;
-    }
+header h1 {
+  margin: 0;
+  font-size: 30px;
+}
 
-    header p {
-      margin: 8px 0 0;
-    }
+header p {
+  margin: 8px 0 0;
+}
 
-    main {
-      padding: 20px;
-    }
+main {
+  padding: 20px;
+}
 
-    .saldo {
-      background: #e8f5f0;
-      border-radius: 18px;
-      padding: 25px;
-      text-align: center;
-      margin-bottom: 15px;
-    }
+.saldo {
+  background: #e8f5f0;
+  border-radius: 18px;
+  padding: 25px;
+  text-align: center;
+  margin-bottom: 15px;
+}
 
-    .saldo span {
-      display: block;
-      color: #555;
-    }
+.saldo span {
+  display: block;
+  color: #555;
+}
 
-    .saldo strong {
-      display: block;
-      margin-top: 8px;
-      font-size: 32px;
-      color: #1f6f5c;
-    }
+.saldo strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 32px;
+  color: #1f6f5c;
+}
 
-    .resumo {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
+.resumo {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 18px;
+}
 
-    .card {
-      flex: 1;
-      background: #f1f3f5;
-      border-radius: 15px;
-      padding: 18px 10px;
-      text-align: center;
-    }
+.card {
+  flex: 1;
+  background: #f1f3f5;
+  border-radius: 15px;
+  padding: 18px 10px;
+  text-align: center;
+}
 
-    .card span {
-      display: block;
-      color: #666;
-      font-size: 13px;
-    }
+.card span {
+  display: block;
+  color: #666;
+  font-size: 13px;
+}
 
-    .card strong {
-      display: block;
-      margin-top: 7px;
-      font-size: 18px;
-    }
+.card strong {
+  display: block;
+  margin-top: 7px;
+  font-size: 18px;
+}
 
-    .menu {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 12px;
-      padding: 15px;
-      background: #1f6f5c;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-    }
+button {
+  width: 100%;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  background: #1f6f5c;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-    .gasto {
-      margin-top: 20px;
-      padding: 20px;
-      border-radius: 15px;
-      background: #fff4d6;
-      text-align: center;
-    }
+.formulario {
+  display: none;
+  margin-top: 20px;
+  padding: 20px;
+  background: #f1f3f5;
+  border-radius: 15px;
+}
 
-    .gasto strong {
-      display: block;
-      margin-top: 8px;
-      font-size: 26px;
-    }
-  </style>
+.formulario.ativo {
+  display: block;
+}
+
+.formulario h2 {
+  margin-top: 0;
+}
+
+label {
+  display: block;
+  margin-top: 12px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+input {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+.formulario button {
+  margin-top: 18px;
+}
+
+.fechar {
+  background: #777;
+}
+
+.gasto {
+  margin-top: 20px;
+  padding: 20px;
+  border-radius: 15px;
+  background: #fff4d6;
+  text-align: center;
+}
+
+.gasto strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 26px;
+}
+
+.mensagem {
+  display: none;
+  margin-top: 12px;
+  padding: 10px;
+  background: #dff3e9;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.lista {
+  margin-top: 15px;
+}
+
+.item {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.item strong {
+  display: block;
+}
+
+.item small {
+  color: #666;
+}
+
+/* HISTÓRICO */
+
+.historico {
+  margin-top: 20px;
+}
+
+.historico h2 {
+  font-size: 20px;
+}
+
+.historico-item {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+}
+
+.entrada {
+  color: #16834b;
+}
+
+.despesa {
+  color: #c0392b;
+}
+</style>
 </head>
 
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <header>
-      <h1>Conta em Dia</h1>
-      <p>Organize sua vida financeira</p>
-    </header>
+<header>
+<h1>Conta em Dia</h1>
+<p>Organize sua vida financeira</p>
+</header>
 
-    <main>
+<main>
 
-      <section class="saldo">
-        <span>Saldo disponível</span>
-        <strong>R$ 0,00</strong>
-      </section>
+<section class="saldo">
+<span>Saldo disponível</span>
+<strong id="saldo">R$ 0,00</strong>
+</section>
 
-      <section class="resumo">
+<section class="resumo">
 
-        <div class="card">
-          <span>Entradas</span>
-          <strong>R$ 0,00</strong>
-        </div>
+<div class="card">
+<span>Entradas</span>
+<strong id="entradas">R$ 0,00</strong>
+</div>
 
-        <div class="card">
-          <span>Saídas</span>
-          <strong>R$ 0,00</strong>
-        </div>
+<div class="card">
+<span>Saídas</span>
+<strong id="saidas">R$ 0,00</strong>
+</div>
 
-      </section>
+</section>
 
-      <section class="menu">
+<section class="menu">
 
-        <button>💰 Adicionar entrada</button>
+<button onclick="abrirEntrada()">
+💰 Adicionar entrada
+</button>
 
-        <button>🛒 Adicionar despesa</button>
+<button onclick="abrirDespesa()">
+🛒 Adicionar despesa
+</button>
 
-        <button>📅 Minhas contas</button>
+<button onclick="abrirContas()">
+📅 Minhas contas
+</button>
 
-      </section>
+<button onclick="mostrarHistorico()">
+📋 Histórico
+</button>
 
-      <section class="gasto">
-        <span>Quanto posso gastar hoje?</span>
-        <strong>R$ 0,00</strong>
-      </section>
+</section>
 
-    </main>
 
-  </div>
+<!-- ENTRADA -->
+
+<section id="entrada" class="formulario">
+
+<h2>Adicionar entrada</h2>
+
+<label>Descrição</label>
+
+<input
+id="descricaoEntrada"
+type="text"
+placeholder="Ex.: Salário"
+>
+
+<label>Valor</label>
+
+<input
+id="valorEntrada"
+type="number"
+placeholder="Ex.: 3500"
+step="0.01"
+>
+
+<label>Data</label>
+
+<input
+id="dataEntrada"
+type="date"
+>
+
+<button onclick="salvarEntrada()">
+Salvar entrada
+</button>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+<div id="mensagemEntrada" class="mensagem"></div>
+
+</section>
+
+
+<!-- DESPESA -->
+
+<section id="despesa" class="formulario">
+
+<h2>Adicionar despesa</h2>
+
+<label>Descrição</label>
+
+<input
+id="descricaoDespesa"
+type="text"
+placeholder="Ex.: Mercado"
+>
+
+<label>Valor</label>
+
+<input
+id="valorDespesa"
+type="number"
+placeholder="Ex.: 150"
+step="0.01"
+>
+
+<label>Data</label>
+
+<input
+id="dataDespesa"
+type="date"
+>
+
+<button onclick="salvarDespesa()">
+Salvar despesa
+</button>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+<div id="mensagemDespesa" class="mensagem"></div>
+
+</section>
+
+
+<!-- CONTAS -->
+
+<section id="contas" class="formulario">
+
+<h2>Minhas contas</h2>
+
+<label>Nome da conta</label>
+
+<input
+id="nomeConta"
+type="text"
+placeholder="Ex.: Conta de luz"
+>
+
+<label>Valor</label>
+
+<input
+id="valorConta"
+type="number"
+placeholder="Ex.: 120"
+step="0.01"
+>
+
+<label>Vencimento</label>
+
+<input
+id="dataConta"
+type="date"
+>
+
+<button onclick="salvarConta()">
+Salvar conta
+</button>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+<div id="listaContas" class="lista"></div>
+
+</section>
+
+
+<!-- HISTÓRICO -->
+
+<section id="historico" class="formulario">
+
+<h2>Histórico</h2>
+
+<div id="listaHistorico"></div>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+</section>
+
+
+<section class="gasto">
+
+<span>Quanto posso gastar hoje?</span>
+
+<strong id="gastoHoje">
+R$ 0,00
+</strong>
+
+</section>
+
+</main>
+
+</div>
+
+
+<script>
+
+let entradas =
+JSON.parse(localStorage.getItem("entradasContaEmDia")) || [];
+
+let despesas =
+JSON.parse(localStorage.getItem("despesasContaEmDia")) || [];
+
+let contas =
+JSON.parse(localStorage.getItem("contasContaEmDia")) || [];
+
+
+function dinheiro(valor) {
+
+return valor.toLocaleString(
+"pt-BR",
+{
+style: "currency",
+currency: "BRL"
+}
+);
+
+}
+
+
+function salvarDados() {
+
+localStorage.setItem(
+"entradasContaEmDia",
+JSON.stringify(entradas)
+);
+
+localStorage.setItem(
+"despesasContaEmDia",
+JSON.stringify(despesas)
+);
+
+localStorage.setItem(
+"contasContaEmDia",
+JSON.stringify(contas)
+);
+
+}
+
+
+function atualizarTela() {
+
+let totalEntradas = 0;
+
+let totalDespesas = 0;
+
+let totalContas = 0;
+
+
+entradas.forEach(function(item) {
+
+totalEntradas += Number(item.valor);
+
+});
+
+
+despesas.forEach(function(item) {
+
+totalDespesas += Number(item.valor);
+
+});
+
+
+contas.forEach(function(item) {
+
+totalContas += Number(item.valor);
+
+});
+
+
+let totalSaidas =
+totalDespesas + totalContas;
+
+
+let saldo =
+totalEntradas - totalSaidas;
+
+
+document.getElementById("entradas")
+.innerText = dinheiro(totalEntradas);
+
+
+document.getElementById("saidas")
+.innerText = dinheiro(totalSaidas);
+
+
+document.getElementById("saldo")
+.innerText = dinheiro(saldo);
+
+
+let gastoHoje = 0;
+
+
+if (saldo > 0) {
+
+gastoHoje = saldo / 30;
+
+}
+
+
+document.getElementById("gastoHoje")
+.innerText = dinheiro(gastoHoje);
+
+
+mostrarContas();
+
+mostrarHistoricoInterno();
+
+}
+
+
+function fecharTudo() {
+
+document
+.querySelectorAll(".formulario")
+.forEach(function(item) {
+
+item.classList.remove("ativo");
+
+});
+
+}
+
+
+function abrirEntrada() {
+
+fecharTudo();
+
+document
+.getElementById("entrada")
+.classList.add("ativo");
+
+}
+
+
+function abrirDespesa() {
+
+fecharTudo();
+
+document
+.getElementById("despesa")
+.classList.add("ativo");
+
+}
+
+
+function abrirContas() {
+
+fecharTudo();
+
+document
+.getElementById("contas")
+.classList.add("ativo");
+
+}
+
+
+function salvarEntrada() {
+
+let descricao =
+document.getElementById(
+"descricaoEntrada"
+).value;
+
+let valor =
+Number(
+document.getElementById(
+"valorEntrada"
+).value
+);
+
+let data =
+document.getElementById(
+"dataEntrada"
+).value;
+
+
+if (
+descricao === "" ||
+valor <= 0
+) {
+
+alert(
+"Preencha a descrição e o valor."
+);
+
+return;
+
+}
+
+
+entradas.push({
+
+descricao: descricao,
+
+valor: valor,
+
+data: data
+
+});
+
+
+salvarDados();
+
+atualizarTela();
+
+
+document.getElementById(
+"descricaoEntrada"
+).value = "";
+
+document.getElementById(
+"valorEntrada"
+).value = "";
+
+document.getElementById(
+"dataEntrada"
+).value = "";
+
+
+document.getElementById(
+"mensagemEntrada"
+).innerText =
+"Entrada salva com sucesso!";
+
+
+document.getElementById(
+"mensagemEntrada"
+).style.display =
+"block";
+
+}
+
+
+function salvarDespesa() {
+
+let descricao =
+document.getElementById(
+"descricaoDespesa"
+).value;
+
+let valor =
+Number(
+document.getElementById(
+"valorDespesa"
+).value
+);
+
+let data =
+document.getElementById(
+"dataDespesa"
+).value;
+
+
+if (
+descricao === "" ||
+valor <= 0
+) {
+
+alert(
+"Preencha a descrição e o valor."
+);
+
+return;
+
+}
+
+
+despesas.push({
+
+descricao: descricao,
+
+valor: valor,
+
+data: data
+
+});
+
+
+salvarDados();
+
+atualizarTela();
+
+
+document.getElementById(
+"descricaoDespesa"
+).value = "";
+
+document.getElementById(
+"valorDespesa"
+).value = "";
+
+document.getElementById(
+"dataDespesa"
+).value = "";
+
+
+document.getElementById(
+"mensagemDespesa"
+).innerText =
+"Despesa salva com sucesso!";
+
+
+document.getElementById(
+"mensagemDespesa"
+).style.display =
+"block";
+
+}
+
+
+function salvarConta() {
+
+let nome =
+document.getElementById(
+"nomeConta"
+).value;
+
+let valor =
+Number(
+document.getElementById(
+"valorConta"
+).value
+);
+
+let data =
+document.getElementById(
+"dataConta"
+).value;
+
+
+if (
+nome === "" ||
+valor <= 0
+) {
+
+alert(
+"Preencha o nome da conta e o valor."
+);
+
+return;
+
+}
+
+
+contas.push({
+
+nome: nome,
+
+valor: valor,
+
+data: data
+
+});
+
+
+salvarDados();
+
+atualizarTela();
+
+
+document.getElementById(
+"nomeConta"
+).value = "";
+
+document.getElementById(
+"valorConta"
+).value = "";
+
+document.getElementById(
+"dataConta"
+).value = "";
+
+}
+
+
+function mostrarContas() {
+
+let lista =
+document.getElementById(
+"listaContas"
+);
+
+lista.innerHTML = "";
+
+
+contas.forEach(function(conta) {
+
+let item =
+document.createElement("div");
+
+item.className = "item";
+
+item.innerHTML =
+"<strong>" +
+conta.nome +
+"</strong>" +
+"<small>" +
+dinheiro(Number(conta.valor)) +
+" • Vencimento: " +
+(conta.data || "não informado") +
+"</small>";
+
+lista.appendChild(item);
+
+});
+
+}
+
+
+function mostrarHistorico() {
+
+fecharTudo();
+
+document
+.getElementById("historico")
+.classList.add("ativo");
+
+mostrarHistoricoInterno();
+
+}
+
+
+function mostrarHistoricoInterno() {
+
+let lista =
+document.getElementById(
+"listaHistorico"
+);
+
+if (!lista) return;
+
+
+lista.innerHTML = "";
+
+
+entradas.forEach(function(item) {
+
+let linha =
+document.createElement("div");
+
+linha.className =
+"historico-item entrada";
+
+linha.innerText =
+"Entrada: " +
+item.descricao +
+" — " +
+dinheiro(Number(item.valor));
+
+lista.appendChild(linha);
+
+});
+
+
+despesas.forEach(function(item) {
+
+let linha =
+document.createElement("div");
+
+linha.className =
+"historico-item despesa";
+
+linha.innerText =
+"Despesa: " +
+item.descricao +
+" — " +
+dinheiro(Number(item.valor));
+
+lista.appendChild(linha);
+
+});
+
+
+contas.forEach(function(item) {
+
+let linha =
+document.createElement("div");
+
+linha.className =
+"historico-item despesa";
+
+linha.innerText =
+"Conta: " +
+item.nome +
+" — " +
+dinheiro(Number(item.valor));
+
+lista.appendChild(linha);
+
+});
+
+}
+
+
+atualizarTela();
+
+</script>
 
 </body>
 </html>
