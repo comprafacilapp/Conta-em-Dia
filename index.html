@@ -878,7 +878,9 @@ linha.innerText =
 "Entrada: " +
 item.descricao +
 " — " +
-dinheiro(Number(item.valor));
+dinheiro(Number(item.valor)) +
+" — " +
+(item.data || "Data não informada");
 
 lista.appendChild(linha);
 
@@ -897,7 +899,9 @@ linha.innerText =
 "Despesa: " +
 item.descricao +
 " — " +
-dinheiro(Number(item.valor));
+dinheiro(Number(item.valor)) +
+" — " +
+(item.data || "Data não informada");
 
 lista.appendChild(linha);
 
@@ -916,7 +920,9 @@ linha.innerText =
 "Conta: " +
 item.nome +
 " — " +
-dinheiro(Number(item.valor));
+dinheiro(Number(item.valor)) +
+" — " +
+(item.data || "Data não informada");
 
 lista.appendChild(linha);
 
