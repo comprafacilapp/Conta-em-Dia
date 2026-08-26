@@ -823,10 +823,31 @@ document.createElement("div");
 
 item.className = "item";
 
-let status =
-conta.paga
-? " ✅ PAGA"
-: " ⏳ EM ABERTO";
+let hoje = new Date();
+hoje.setHours(0, 0, 0, 0);
+
+let vencimento = conta.data
+? new Date(conta.data + "T00:00:00")
+: null;
+
+let status;
+
+if (conta.paga) {
+
+status = " ✅ PAGA";
+
+} else if (
+vencimento &&
+vencimento < hoje
+) {
+
+status = " ⚠️ ATRASADA";
+
+} else {
+
+status = " ⏳ EM ABERTO";
+
+}
 
 item.innerHTML =
 "<strong>" +
