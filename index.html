@@ -850,6 +850,13 @@ vencimento.getTime() === hoje.getTime()
 
 status = " 🔔 VENCE HOJE";
 
+} else if (
+vencimento &&
+(vencimento - hoje) / 86400000 <= 3
+) {
+
+status = " ⏰ VENCE EM BREVE";
+
 } else {
 
 status = " ⏳ EM ABERTO";
