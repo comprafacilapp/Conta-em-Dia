@@ -1077,10 +1077,20 @@ if (!lista) return;
 
 lista.innerHTML = "";
 
+let mesSelecionado =
+document.getElementById("mesSelecionado").value;
+
 
 // ENTRADAS
 
-entradas.forEach(function(item) {
+entradas
+.filter(function(item) {
+
+return item.data &&
+item.data.startsWith(mesSelecionado);
+
+})
+.forEach(function(item) {
 
 let linha =
 document.createElement("div");
@@ -1167,7 +1177,14 @@ lista.appendChild(linha);
 
 // DESPESAS
 
-despesas.forEach(function(item) {
+despesas
+.filter(function(item) {
+
+return item.data &&
+item.data.startsWith(mesSelecionado);
+
+})
+.forEach(function(item) {
 
 let linha =
 document.createElement("div");
@@ -1254,7 +1271,14 @@ lista.appendChild(linha);
 
 // CONTAS
 
-contas.forEach(function(item) {
+contas
+.filter(function(item) {
+
+return item.data &&
+item.data.startsWith(mesSelecionado);
+
+})
+.forEach(function(item) {
 
 let linha =
 document.createElement("div");
