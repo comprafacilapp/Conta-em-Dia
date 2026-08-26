@@ -888,6 +888,29 @@ atualizarTela();
 item.appendChild(botaoPagar);
 
 }
+else {
+
+let botaoDesfazer =
+document.createElement("button");
+
+botaoDesfazer.innerText =
+"↩️ Marcar como não paga";
+
+botaoDesfazer.onclick = function() {
+
+conta.paga = false;
+
+conta.dataPagamento = "";
+
+salvarDados();
+mostrarContas();
+atualizarTela();
+
+};
+
+item.appendChild(botaoDesfazer);
+
+}
 
 lista.appendChild(item);
 
