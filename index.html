@@ -781,9 +781,10 @@ nome: nome,
 
 valor: valor,
 
-data: data
-
+data: data,
+paga: false
 });
+
 
 
 salvarDados();
@@ -815,7 +816,6 @@ document.getElementById(
 
 lista.innerHTML = "";
 
-
 contas.forEach(function(conta) {
 
 let item =
@@ -823,15 +823,45 @@ document.createElement("div");
 
 item.className = "item";
 
+let status =
+conta.paga
+? " ✅ PAGA"
+: " ⏳ EM ABERTO";
+
 item.innerHTML =
 "<strong>" +
 conta.nome +
+status +
 "</strong>" +
 "<small>" +
 dinheiro(Number(conta.valor)) +
 " • Vencimento: " +
-(conta.data || "não informado") +
+(conta.data
+? conta.data.split("-").reverse().join("/")
+: "não informado") +
 "</small>";
+
+if (!conta.paga) {
+
+let botaoPagar =
+document.createElement("button");
+
+botaoPagar.innerText =
+"✅ Marcar como paga";
+
+botaoPagar.onclick = function() {
+
+conta.paga = true;
+
+salvarDados();
+mostrarContas();
+atualizarTela();
+
+};
+
+item.appendChild(botaoPagar);
+
+}
 
 lista.appendChild(item);
 
