@@ -843,9 +843,17 @@ vencimento < hoje
 
 status = " ⚠️ ATRASADA";
 
+} else if (
+vencimento &&
+vencimento.getTime() === hoje.getTime()
+) {
+
+status = " 🔔 VENCE HOJE";
+
 } else {
 
 status = " ⏳ EM ABERTO";
+
 
 }
 
