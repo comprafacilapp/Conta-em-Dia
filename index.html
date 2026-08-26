@@ -212,6 +212,27 @@ input {
 .despesa {
   color: #c0392b;
 }
+  .filtro-mes {
+  margin-bottom: 15px;
+  padding: 12px;
+  background: white;
+  border-radius: 12px;
+}
+
+.filtro-mes label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.filtro-mes input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
 </style>
 </head>
 
@@ -225,7 +246,20 @@ input {
 </header>
 
 <main>
+<section class="filtro-mes">
 
+  <label for="mesSelecionado">
+    📅 Mês
+  </label>
+
+  <input
+    id="mesSelecionado"
+    onchange="atualizarTela()"
+    type="month"
+  >
+
+</section>
+  
 <section class="saldo">
 <span>Saldo disponível</span>
 <strong id="saldo">R$ 0,00</strong>
@@ -472,6 +506,27 @@ JSON.stringify(contas)
 
 function atualizarTela() {
 
+let campoMes =
+document.getElementById("mesSelecionado");
+
+if (!campoMes.value) {
+
+let hoje = new Date();
+
+let ano = hoje.getFullYear();
+
+let mes =
+String(hoje.getMonth() + 1).padStart(2, "0");
+
+campoMes.value =
+ano + "-" + mes;
+
+}
+
+let mesSelecionado =
+campoMes.value;
+
+
 let totalEntradas = 0;
 
 let totalDespesas = 0;
@@ -481,21 +536,42 @@ let totalContas = 0;
 
 entradas.forEach(function(item) {
 
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+
 totalEntradas += Number(item.valor);
+
+}
 
 });
 
 
 despesas.forEach(function(item) {
 
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+
 totalDespesas += Number(item.valor);
+
+}
 
 });
 
 
 contas.forEach(function(item) {
 
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+
 totalContas += Number(item.valor);
+
+}
 
 });
 
