@@ -276,7 +276,15 @@ input {
 <span>Saídas</span>
 <strong id="saidas">R$ 0,00</strong>
 </div>
+<div class="card">
+<span>Despesas</span>
+<strong id="totalDespesas">R$ 0,00</strong>
+</div>
 
+<div class="card">
+<span>Contas</span>
+<strong id="totalContas">R$ 0,00</strong>
+</div>
 </section>
 
 <section class="menu">
@@ -590,7 +598,11 @@ document.getElementById("entradas")
 
 document.getElementById("saidas")
 .innerText = dinheiro(totalSaidas);
+document.getElementById("totalDespesas")
+.innerText = dinheiro(totalDespesas);
 
+document.getElementById("totalContas")
+.innerText = dinheiro(totalContas);
 
 document.getElementById("saldo")
 .innerText = dinheiro(saldo);
