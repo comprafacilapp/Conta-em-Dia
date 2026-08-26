@@ -816,7 +816,24 @@ document.getElementById(
 
 lista.innerHTML = "";
 
-contas.forEach(function(conta) {
+let contasOrdenadas =
+[...contas].sort(function(a, b) {
+
+if (a.paga && !b.paga) return 1;
+
+if (!a.paga && b.paga) return -1;
+
+if (!a.data && !b.data) return 0;
+
+if (!a.data) return 1;
+
+if (!b.data) return -1;
+
+return new Date(a.data) - new Date(b.data);
+
+});
+
+contasOrdenadas.forEach(function(conta) {
 
 let item =
 document.createElement("div");
