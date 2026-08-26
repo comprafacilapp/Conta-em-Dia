@@ -860,6 +860,10 @@ dinheiro(Number(conta.valor)) +
 (conta.data
 ? conta.data.split("-").reverse().join("/")
 : "não informado") +
+(conta.paga && conta.dataPagamento
+? " • Paga em: " +
+conta.dataPagamento.split("-").reverse().join("/")
+: "") +
 "</small>";
 
 if (!conta.paga) {
@@ -873,7 +877,8 @@ botaoPagar.innerText =
 botaoPagar.onclick = function() {
 
 conta.paga = true;
-
+conta.dataPagamento =
+new Date().toISOString().split("T")[0];
 salvarDados();
 mostrarContas();
 atualizarTela();
