@@ -892,8 +892,36 @@ document.getElementById(
 
 lista.innerHTML = "";
 
+
+let mesSelecionado =
+document.getElementById("mesSelecionado").value;
+
+let hoje = new Date();
+hoje.setHours(0, 0, 0, 0);
+
+let contasFiltradas =
+contas.filter(function(conta) {
+
+if (!conta.data) return false;
+
+let vencimento =
+new Date(conta.data + "T00:00:00");
+
+let pertenceAoMes =
+conta.data.startsWith(mesSelecionado);
+
+let atrasadaAnterior =
+!conta.paga &&
+vencimento < hoje &&
+!pertenceAoMes;
+
+return pertenceAoMes || atrasadaAnterior;
+
+});
+
+
 let contasOrdenadas =
-[...contas].sort(function(a, b) {
+[...contasFiltradas].sort(function(a, b) {
 
 if (a.paga && !b.paga) return 1;
 
@@ -908,8 +936,7 @@ if (!b.data) return -1;
 return new Date(a.data) - new Date(b.data);
 
 });
-
-contasOrdenadas.forEach(function(conta) {
+  contasOrdenadas.forEach(function(conta) {
 
 let item =
 document.createElement("div");
