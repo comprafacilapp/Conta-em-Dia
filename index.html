@@ -301,6 +301,9 @@ input {
 <button onclick="mostrarHistorico()">
 📋 Histórico
 </button>
+  <button onclick="mostrarRelatorio()">
+📊 Relatório mensal
+</button>
 
 </section>
 
@@ -447,7 +450,17 @@ Fechar
 </button>
 
 </section>
+<section id="relatorio" class="formulario">
 
+<h2>📊 Relatório mensal</h2>
+
+<div id="conteudoRelatorio"></div>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+</section>
 
 <section class="gasto">
 
@@ -1073,6 +1086,64 @@ document
 
 mostrarHistoricoInterno();
 
+}
+  function mostrarRelatorio() {
+
+fecharTudo();
+
+document
+.getElementById("relatorio")
+.classList.add("ativo");
+let mesSelecionado =
+document.getElementById("mesSelecionado").value;
+let totalEntradas = 0;
+let totalDespesas = 0;
+let totalContas = 0;
+entradas.forEach(function(item) {
+
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+totalEntradas += Number(item.valor);
+}
+
+});
+    despesas.forEach(function(item) {
+
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+totalDespesas += Number(item.valor);
+}
+
+});
+    contas.forEach(function(item) {
+
+if (
+item.data &&
+item.data.startsWith(mesSelecionado)
+) {
+totalContas += Number(item.valor);
+}
+
+});
+    
+let totalSaidas =
+totalDespesas + totalContas;
+
+let saldo =
+totalEntradas - totalSaidas;
+    let conteudo =
+document.getElementById("conteudoRelatorio");
+
+conteudo.innerHTML =
+"<p><strong>Entradas:</strong> " + dinheiro(totalEntradas) + "</p>" +
+"<p><strong>Despesas:</strong> " + dinheiro(totalDespesas) + "</p>" +
+"<p><strong>Contas:</strong> " + dinheiro(totalContas) + "</p>" +
+"<p><strong>Saídas totais:</strong> " + dinheiro(totalSaidas) + "</p>" +
+"<p><strong>Saldo:</strong> " + dinheiro(saldo) + "</p>";
 }
 
 function mostrarHistoricoInterno() {
