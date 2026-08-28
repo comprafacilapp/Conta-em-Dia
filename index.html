@@ -254,7 +254,7 @@ input {
     onchange="atualizarTela()"
     type="month"
   >
-
+<div id="lembretesContas"></div>
 </section>
   
 <section class="saldo">
@@ -695,11 +695,95 @@ document.getElementById("gastoHoje")
 
 
 mostrarContas();
-
+mostrarLembretes();
 mostrarHistoricoInterno();
 
 }
+function mostrarLembretes() {
 
+let area =
+document.getElementById("lembretesContas");
+
+let hoje = new Date();
+
+hoje.setHours(0, 0, 0, 0);
+
+let atrasadas = 0;
+let vencemHoje = 0;
+let vencemEmBreve = 0;
+
+contas.forEach(function(item) {
+
+if (item.paga) {
+return;
+}
+
+if (!item.data) {
+return;
+}
+
+let partes =
+item.data.split("-");
+
+let vencimento =
+new Date(
+Number(partes[0]),
+Number(partes[1]) - 1,
+Number(partes[2])
+);
+
+vencimento.setHours(0, 0, 0, 0);
+
+let diferenca =
+Math.round(
+(vencimento - hoje) /
+(1000 * 60 * 60 * 24)
+);
+
+if (diferenca < 0) {
+
+atrasadas++;
+
+} else if (diferenca === 0) {
+
+vencemHoje++;
+
+} else if (diferenca <= 3) {
+
+vencemEmBreve++;
+
+}
+
+});
+
+let texto = "";
+
+if (atrasadas > 0) {
+texto +=
+"⚠️ " + atrasadas +
+" conta(s) atrasada(s)<br>";
+}
+
+if (vencemHoje > 0) {
+texto +=
+"🔔 " + vencemHoje +
+" conta(s) vence(m) hoje<br>";
+}
+
+if (vencemEmBreve > 0) {
+texto +=
+"📅 " + vencemEmBreve +
+" conta(s) vence(m) nos próximos 3 dias";
+}
+
+if (texto === "") {
+texto =
+"✅ Nenhuma conta urgente no momento.";
+}
+
+area.innerHTML = texto;
+
+}
 
 function fecharTudo() {
 
