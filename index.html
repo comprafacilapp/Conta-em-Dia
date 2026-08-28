@@ -473,6 +473,7 @@ Fechar
 <h2>📊 Relatório mensal</h2>
 
 <div id="conteudoRelatorio"></div>
+  <div id="graficoRelatorio"></div>
   <button onclick="compartilharResumo()">
 📤 Compartilhar resumo
 </button>
@@ -1505,6 +1506,32 @@ conteudo.innerHTML =
 "<p><strong>Contas:</strong> " + dinheiro(totalContas) + "</p>" +
 "<p><strong>Saídas totais:</strong> " + dinheiro(totalSaidas) + "</p>" +
 "<p><strong>Saldo:</strong> " + dinheiro(saldo) + "</p>";
+  let grafico =
+document.getElementById("graficoRelatorio");
+
+let maiorValor =
+Math.max(totalEntradas, totalSaidas, 1);
+
+let larguraEntradas =
+(totalEntradas / maiorValor) * 100;
+
+let larguraSaidas =
+(totalSaidas / maiorValor) * 100;
+
+grafico.innerHTML =
+"<p><strong>📈 Entradas x Saídas</strong></p>" +
+
+"<div>Entradas</div>" +
+"<div style='background:#e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:10px;'>" +
+"<div style='width:" + larguraEntradas + "%;padding:8px;background:#16834b;color:white;'>" +
+dinheiro(totalEntradas) +
+"</div></div>" +
+
+"<div>Saídas</div>" +
+"<div style='background:#e0e0e0;border-radius:10px;overflow:hidden;'>" +
+"<div style='width:" + larguraSaidas + "%;padding:8px;background:#c0392b;color:white;'>" +
+dinheiro(totalSaidas) +
+"</div></div>";  
 }
 
 function compartilharResumo() {
