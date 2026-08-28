@@ -317,6 +317,11 @@ input {
 <button onclick="abrirCalculadora()">
 🧮 Calculadora
 </button>
+
+ <button onclick="abrirMetaEconomia()">
+🎯 Meta de economia
+</button> 
+  
 </section>
 
 
@@ -533,6 +538,29 @@ step="0.01"
 </button>
 <div id="resultadoCalculadora">
 Resultado: R$ 0,00
+</div>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+</section>
+  <section id="metaEconomia" class="formulario">
+
+<h2>🎯 Meta de economia</h2>
+  <input
+id="valorMetaEconomia"
+type="number"
+placeholder="Quanto você quer economizar?"
+step="0.01"
+>
+
+<button onclick="salvarMetaEconomia()">
+💾 Salvar meta
+</button>
+
+<div id="resultadoMetaEconomia">
+Meta ainda não definida.
 </div>
 
 <button class="fechar" onclick="fecharTudo()">
@@ -1259,6 +1287,31 @@ document
 .classList.add("ativo");
 
 }
+  function abrirMetaEconomia() {
+
+fecharTudo();
+
+document
+.getElementById("metaEconomia")
+.classList.add("ativo");
+
+let metaSalva =
+Number(localStorage.getItem("metaEconomia")) || 0;
+
+if (metaSalva > 0) {
+
+document
+.getElementById("valorMetaEconomia")
+.value = metaSalva;
+
+document
+.getElementById("resultadoMetaEconomia")
+.innerText =
+"Meta salva: " + dinheiro(metaSalva);
+
+}
+
+}
   function calcularSoma() {
 
 let numero1 =
@@ -1384,6 +1437,35 @@ document
 .getElementById("resultadoCalculadora")
 .innerText =
 "Resultado: R$ 0,00";
+
+}
+  function salvarMetaEconomia() {
+
+let valor =
+Number(
+document.getElementById("valorMetaEconomia").value
+);
+
+if (valor <= 0) {
+
+document
+.getElementById("resultadoMetaEconomia")
+.innerText =
+"Digite uma meta válida.";
+
+return;
+
+}
+
+localStorage.setItem(
+"metaEconomia",
+valor
+);
+
+document
+.getElementById("resultadoMetaEconomia")
+.innerText =
+"Meta salva: " + dinheiro(valor);
 
 }
   function calcularSubtracao() {
