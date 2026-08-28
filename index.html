@@ -455,6 +455,9 @@ Fechar
 <h2>📊 Relatório mensal</h2>
 
 <div id="conteudoRelatorio"></div>
+  <button onclick="compartilharResumo()">
+📤 Compartilhar resumo
+</button>
 
 <button class="fechar" onclick="fecharTudo()">
 Fechar
@@ -1144,6 +1147,28 @@ conteudo.innerHTML =
 "<p><strong>Contas:</strong> " + dinheiro(totalContas) + "</p>" +
 "<p><strong>Saídas totais:</strong> " + dinheiro(totalSaidas) + "</p>" +
 "<p><strong>Saldo:</strong> " + dinheiro(saldo) + "</p>";
+}
+
+function compartilharResumo() {
+
+let texto =
+document.getElementById("conteudoRelatorio").innerText;
+
+if (navigator.share) {
+
+navigator.share({
+title: "Conta em Dia - Relatório Mensal",
+text: texto
+});
+
+} else {
+
+navigator.clipboard.writeText(texto);
+
+alert("Resumo copiado! Agora é só colar no WhatsApp ou onde quiser.");
+
+}
+
 }
 
 function mostrarHistoricoInterno() {
