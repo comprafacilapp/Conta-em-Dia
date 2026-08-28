@@ -304,7 +304,9 @@ input {
   <button onclick="mostrarRelatorio()">
 📊 Relatório mensal
 </button>
-
+<button onclick="abrirCalculadora()">
+🧮 Calculadora
+</button>
 </section>
 
 
@@ -464,7 +466,39 @@ Fechar
 </button>
 
 </section>
+  
+  <section id="calculadora" class="formulario">
 
+<h2>🧮 Calculadora</h2>
+
+<input
+id="calcNumero1"
+type="number"
+placeholder="Primeiro valor"
+step="0.01"
+>
+
+<input
+id="calcNumero2"
+type="number"
+placeholder="Segundo valor"
+step="0.01"
+>
+
+<button onclick="calcularSoma()">
+➕ Somar
+</button>
+
+<div id="resultadoCalculadora">
+Resultado: R$ 0,00
+</div>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+</section>
+  
 <section class="gasto">
 
 <span>Quanto posso gastar hoje?</span>
@@ -1090,6 +1124,33 @@ document
 mostrarHistoricoInterno();
 
 }
+function abrirCalculadora() {
+
+fecharTudo();
+
+document
+.getElementById("calculadora")
+.classList.add("ativo");
+
+}
+  function calcularSoma() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let resultado =
+numero1 + numero2;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Resultado: " + dinheiro(resultado);
+
+}
+  
   function mostrarRelatorio() {
 
 fecharTudo();
