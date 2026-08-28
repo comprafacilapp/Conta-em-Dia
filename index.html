@@ -1517,20 +1517,28 @@ let larguraEntradas =
 
 let larguraSaidas =
 (totalSaidas / maiorValor) * 100;
+let textoEntrada =
+totalEntradas > 0
+? dinheiro(totalEntradas)
+: "";
 
+let textoSaida =
+totalSaidas > 0
+? dinheiro(totalSaidas)
+: "";
 grafico.innerHTML =
 "<p><strong>📈 Entradas x Saídas</strong></p>" +
 
 "<div>Entradas</div>" +
 "<div style='background:#e0e0e0;border-radius:10px;overflow:hidden;margin-bottom:10px;'>" +
-"<div style='width:" + larguraEntradas + "%;padding:8px;background:#16834b;color:white;'>" +
-dinheiro(totalEntradas) +
+"<div style='width:" + larguraEntradas + "%;padding:" + (totalEntradas > 0 ? "8px" : "0") + ";background:#16834b;color:white;'>" +
+textoEntrada +
 "</div></div>" +
 
 "<div>Saídas</div>" +
 "<div style='background:#e0e0e0;border-radius:10px;overflow:hidden;'>" +
-"<div style='width:" + larguraSaidas + "%;padding:8px;background:#c0392b;color:white;'>" +
-dinheiro(totalSaidas) +
+"<div style='width:" + larguraSaidas + "%;padding:" + (totalSaidas > 0 ? "8px" : "0") + ";background:#c0392b;color:white;'>" +
+textoSaida +
 "</div></div>";  
 }
 
