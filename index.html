@@ -488,7 +488,32 @@ step="0.01"
 <button onclick="calcularSoma()">
 ➕ Somar
 </button>
+<button onclick="calcularSubtracao()">
+➖ Subtrair
+</button>
 
+<button onclick="calcularMultiplicacao()">
+✖️ Multiplicar
+</button>
+
+<button onclick="calcularDivisao()">
+➗ Dividir
+</button>
+    <button onclick="calcularPorcentagem()">
+% Porcentagem
+</button>
+    <button onclick="calcularDesconto()">
+🏷️ Desconto
+</button>
+    <button onclick="calcularAcrescimo()">
+➕% Acréscimo
+</button>
+    <button onclick="calcularParcelamento()">
+💳 Parcelar
+</button>
+    <button onclick="limparCalculadora()">
+🧹 Limpar
+</button>
 <div id="resultadoCalculadora">
 Resultado: R$ 0,00
 </div>
@@ -1143,6 +1168,178 @@ Number(document.getElementById("calcNumero2").value);
 
 let resultado =
 numero1 + numero2;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Resultado: " + dinheiro(resultado);
+
+}
+  function calcularPorcentagem() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let resultado =
+numero1 * numero2 / 100;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+numero2 + "% de " +
+dinheiro(numero1) +
+" = " +
+dinheiro(resultado);
+
+}
+  function calcularDesconto() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let desconto =
+numero1 * numero2 / 100;
+
+let resultado =
+numero1 - desconto;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Com " +
+numero2 +
+"% de desconto: " +
+dinheiro(resultado);
+
+}
+  function calcularAcrescimo() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let acrescimo =
+numero1 * numero2 / 100;
+
+let resultado =
+numero1 + acrescimo;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Com " +
+numero2 +
+"% de acréscimo: " +
+dinheiro(resultado);
+
+}
+  function calcularParcelamento() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+if (numero2 <= 0) {
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Informe uma quantidade válida de parcelas.";
+
+return;
+
+}
+
+let resultado =
+numero1 / numero2;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+numero2 +
+" parcelas de " +
+dinheiro(resultado);
+
+}
+  function limparCalculadora() {
+
+document
+.getElementById("calcNumero1").value = "";
+
+document
+.getElementById("calcNumero2").value = "";
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Resultado: R$ 0,00";
+
+}
+  function calcularSubtracao() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let resultado =
+numero1 - numero2;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Resultado: " + dinheiro(resultado);
+
+}
+  function calcularMultiplicacao() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+let resultado =
+numero1 * numero2;
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Resultado: " + dinheiro(resultado);
+
+}
+  function calcularDivisao() {
+
+let numero1 =
+Number(document.getElementById("calcNumero1").value);
+
+let numero2 =
+Number(document.getElementById("calcNumero2").value);
+
+if (numero2 === 0) {
+
+document
+.getElementById("resultadoCalculadora")
+.innerText =
+"Não é possível dividir por zero.";
+
+return;
+
+}
+
+let resultado =
+numero1 / numero2;
 
 document
 .getElementById("resultadoCalculadora")
