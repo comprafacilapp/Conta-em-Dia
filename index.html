@@ -742,7 +742,7 @@ document.getElementById("gastoHoje")
 mostrarContas();
 mostrarLembretes();
 mostrarHistoricoInterno();
-
+atualizarMetaEconomia();
 }
 function mostrarLembretes() {
 
@@ -1466,6 +1466,76 @@ document
 .getElementById("resultadoMetaEconomia")
 .innerText =
 "Meta salva: " + dinheiro(valor);
+atualizarMetaEconomia();
+}
+  function atualizarMetaEconomia() {
+
+let meta =
+Number(localStorage.getItem("metaEconomia")) || 0;
+
+if (meta <= 0) {
+return;
+}
+
+let mesSelecionado =
+document.getElementById("mesSelecionado").value;
+
+let totalEntradas = 0;
+let totalDespesas = 0;
+let totalContas = 0;
+
+entradas.forEach(function(item) {
+
+if (item.data && item.data.startsWith(mesSelecionado)) {
+totalEntradas += Number(item.valor);
+}
+
+});
+
+despesas.forEach(function(item) {
+
+if (item.data && item.data.startsWith(mesSelecionado)) {
+totalDespesas += Number(item.valor);
+}
+
+});
+
+contas.forEach(function(item) {
+
+if (item.data && item.data.startsWith(mesSelecionado)) {
+totalContas += Number(item.valor);
+}
+
+});
+
+let economizado =
+totalEntradas - totalDespesas - totalContas;
+
+if (economizado < 0) {
+economizado = 0;
+}
+
+let falta =
+meta - economizado;
+
+if (falta < 0) {
+falta = 0;
+}
+
+let progresso =
+(economizado / meta) * 100;
+
+if (progresso > 100) {
+progresso = 100;
+}
+
+document
+.getElementById("resultadoMetaEconomia")
+.innerHTML =
+"<strong>🎯 Meta:</strong> " + dinheiro(meta) + "<br>" +
+"<strong>💰 Economizado:</strong> " + dinheiro(economizado) + "<br>" +
+"<strong>⏳ Falta:</strong> " + dinheiro(falta) + "<br>" +
+"<strong>Progresso:</strong> " + progresso.toFixed(0) + "%";
 
 }
   function calcularSubtracao() {
