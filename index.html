@@ -454,6 +454,12 @@ Fechar
 <section id="historico" class="formulario">
 
 <h2>Histórico</h2>
+  <input
+id="pesquisaHistorico"
+type="text"
+placeholder="🔎 Pesquisar no histórico..."
+oninput="mostrarHistoricoInterno()"
+>
 
 <div id="listaHistorico"></div>
 
@@ -1536,7 +1542,11 @@ lista.innerHTML = "";
 
 let mesSelecionado =
 document.getElementById("mesSelecionado").value;
-
+let pesquisa =
+document
+.getElementById("pesquisaHistorico")
+.value
+.toLowerCase();
 
 // ENTRADAS
 
@@ -1544,8 +1554,10 @@ entradas
 .filter(function(item) {
 
 return item.data &&
-item.data.startsWith(mesSelecionado);
-
+item.data.startsWith(mesSelecionado) &&
+(item.descricao || "")
+.toLowerCase()
+.includes(pesquisa);
 })
 .forEach(function(item) {
 
@@ -1638,7 +1650,10 @@ despesas
 .filter(function(item) {
 
 return item.data &&
-item.data.startsWith(mesSelecionado);
+item.data.startsWith(mesSelecionado) &&
+(item.descricao || "")
+.toLowerCase()
+.includes(pesquisa);
 
 })
 .forEach(function(item) {
@@ -1732,7 +1747,10 @@ contas
 .filter(function(item) {
 
 return item.data &&
-item.data.startsWith(mesSelecionado);
+item.data.startsWith(mesSelecionado) &&
+(item.nome || "")
+.toLowerCase()
+.includes(pesquisa);
 
 })
 .forEach(function(item) {
