@@ -1,4 +1,4 @@
-const CACHE_NAME = "conta-em-dia-v2";
+const CACHE_NAME = "conta-em-dia-v3";
 
 const ARQUIVOS = [
   "./",
@@ -36,10 +36,26 @@ self.clients.claim();
 
 self.addEventListener("fetch", function(event) {
 
+  if (event.request.method !== "GET") {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request)
+    fetch(event.request)
       .then(function(resposta) {
-        return resposta || fetch(event.request);
+
+        let copia = resposta.clone();
+
+        caches.open(CACHE_NAME)
+          .then(function(cache) {
+            cache.put(event.request, copia);
+          });
+
+        return resposta;
+
+      })
+      .catch(function() {
+        return caches.match(event.request);
       })
   );
 
