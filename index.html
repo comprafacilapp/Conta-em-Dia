@@ -1331,7 +1331,13 @@ document
 
 }
   function abrirMetaEconomia() {
+if (!usuarioPremium()) {
 
+  alert("⭐ Meta de economia é um recurso Premium.");
+
+  return;
+
+}
 fecharTudo();
 
 document
@@ -1364,6 +1370,13 @@ document
 
 }
 function fazerBackup() {
+  if (!usuarioPremium()) {
+
+  alert("⭐ Backup dos dados é um recurso Premium.");
+
+  return;
+
+}
 
   let dadosBackup = {};
 
@@ -1389,6 +1402,13 @@ function fazerBackup() {
 }
 
  function restaurarBackup() {
+   if (!usuarioPremium()) {
+
+  alert("⭐ Restaurar backup é um recurso Premium.");
+
+  return;
+
+}
 
   let seletor = document.createElement("input");
   seletor.type = "file";
