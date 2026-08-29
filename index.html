@@ -363,6 +363,9 @@ input {
 <button onclick="restaurarBackup()">
 📂 Restaurar backup
 </button>
+    <button onclick="alternarPlanoTeste()">
+🧪 Alternar Grátis / Premium
+</button>
 
 <button class="fechar" onclick="fecharTudo()">
 Fechar
@@ -1729,12 +1732,12 @@ Number(document.getElementById("calcNumero2").value);
 
 if (numero2 === 0) {
 
-document
-.getElementById("resultadoCalculadora")
-.innerText =
-"Não é possível dividir por zero.";
+  document
+    .getElementById("resultadoCalculadora")
+    .innerText =
+    "Não é possível dividir por zero.";
 
-return;
+  return;
 
 }
 
@@ -1742,31 +1745,51 @@ let resultado =
 numero1 / numero2;
 
 document
-.getElementById("resultadoCalculadora")
-.innerText =
-"Resultado: " + dinheiro(resultado);
+  .getElementById("resultadoCalculadora")
+  .innerText =
+  "Resultado: " + dinheiro(resultado);
 
 }
- function usuarioPremium() {
+
+function usuarioPremium() {
 
   return localStorage.getItem("planoContaEmDia") === "premium";
 
-} 
-  
-  function mostrarRelatorio() {
-    if (!usuarioPremium()) {
+}
 
-  alert("⭐ Relatório mensal é um recurso Premium.");
+function alternarPlanoTeste() {
 
-  return;
+  if (usuarioPremium()) {
+
+    localStorage.setItem("planoContaEmDia", "gratis");
+
+    alert("🧪 Modo de teste: GRÁTIS ativado.");
+
+  } else {
+
+    localStorage.setItem("planoContaEmDia", "premium");
+
+    alert("⭐ Modo de teste: PREMIUM ativado.");
+
+  }
 
 }
 
-fecharTudo();
+function mostrarRelatorio() {
 
-document
-.getElementById("relatorio")
-.classList.add("ativo");
+  if (!usuarioPremium()) {
+
+    alert("⭐ Relatório mensal é um recurso Premium.");
+
+    return;
+
+  }
+
+  fecharTudo();
+
+  document
+    .getElementById("relatorio")
+    .classList.add("ativo");
 let mesSelecionado =
 document.getElementById("mesSelecionado").value;
 let totalEntradas = 0;
