@@ -1804,8 +1804,20 @@ document
 "Resultado: " + dinheiro(resultado);
 
 }
+ function usuarioPremium() {
+
+  return localStorage.getItem("planoContaEmDia") === "premium";
+
+} 
   
   function mostrarRelatorio() {
+    if (!usuarioPremium()) {
+
+  alert("⭐ Relatório mensal é um recurso Premium.");
+
+  return;
+
+}
 
 fecharTudo();
 
