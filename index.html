@@ -353,6 +353,23 @@ input {
 ⚙️ Configurações
 </button>
 </section>
+  <section id="configuracoes" class="formulario">
+
+<h2>Configurações</h2>
+
+<button onclick="fazerBackup()">
+💾 Fazer backup dos dados
+</button>
+
+<button onclick="restaurarBackup()">
+📂 Restaurar backup
+</button>
+
+<button class="fechar" onclick="fecharTudo()">
+Fechar
+</button>
+
+</section>
 
 
 <!-- ENTRADA -->
@@ -1343,10 +1360,86 @@ document
 }
     function abrirConfiguracoes() {
 
-alert("⚙️ Configurações estarão disponíveis em breve.");
+  fecharTudo();
 
+  document
+    .getElementById("configuracoes")
+    .classList.add("ativo");
 
 }
+function fazerBackup() {
+
+  let dadosBackup = {};
+
+  for (let i = 0; i < localStorage.length; i++) {
+    let chave = localStorage.key(i);
+    dadosBackup[chave] = localStorage.getItem(chave);
+  }
+
+  let arquivo = new Blob(
+    [JSON.stringify(dadosBackup, null, 2)],
+    { type: "application/json" }
+  );
+
+  let link = document.createElement("a");
+  link.href = URL.createObjectURL(arquivo);
+  link.download = "conta-em-dia-backup.json";
+  link.click();
+
+  URL.revokeObjectURL(link.href);
+
+  alert("💾 Backup criado com sucesso!");
+
+}
+
+ function restaurarBackup() {
+
+  let seletor = document.createElement("input");
+  seletor.type = "file";
+  seletor.accept = ".json";
+
+  seletor.onchange = function(event) {
+
+    let arquivo = event.target.files[0];
+
+    if (!arquivo) {
+      return;
+    }
+
+    let leitor = new FileReader();
+
+    leitor.onload = function() {
+
+      try {
+
+        let dadosBackup = JSON.parse(leitor.result);
+
+        localStorage.clear();
+
+        Object.keys(dadosBackup).forEach(function(chave) {
+          localStorage.setItem(chave, dadosBackup[chave]);
+        });
+
+        alert("📂 Backup restaurado com sucesso!");
+
+        location.reload();
+
+      } catch (erro) {
+
+        alert("❌ Não foi possível restaurar este backup.");
+
+      }
+
+    };
+
+    leitor.readAsText(arquivo);
+
+  };
+
+  seletor.click();
+
+} 
+  
   function calcularSoma() {
 
 let numero1 =
