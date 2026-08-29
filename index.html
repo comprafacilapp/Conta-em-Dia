@@ -275,10 +275,6 @@ input {
 
 <div class="app">
 
-<header>
-<h1>Conta em Dia</h1>
-<p>Organize sua vida financeira</p>
-</header>
 
 <main>
 <section class="filtro-mes">
@@ -352,83 +348,7 @@ input {
   <button onclick="abrirConfiguracoes()">
 ⚙️ Configurações
 </button>
-</section><header>
-<h1>Conta em Dia</h1>
-<p>Organize sua vida financeira</p>
-</header>
-
-<main>
-<section class="filtro-mes">
-
-  <label for="mesSelecionado">
-    📅 Mês
-  </label>
-
-  <input
-    id="mesSelecionado"
-    onchange="atualizarTela()"
-    type="month"
-  >
-<div id="lembretesContas"></div>
 </section>
-  
-<section class="saldo">
-<span>Saldo disponível</span>
-<strong id="saldo">R$ 0,00</strong>
-</section>
-
-<section class="resumo">
-
-<div class="card">
-<span>Entradas</span>
-<strong id="entradas">R$ 0,00</strong>
-</div>
-
-<div class="card">
-<span>Saídas</span>
-<strong id="saidas">R$ 0,00</strong>
-</div>
-<div class="card">
-<span>Despesas</span>
-<strong id="totalDespesas">R$ 0,00</strong>
-</div>
-
-<div class="card">
-<span>Contas</span>
-<strong id="totalContas">R$ 0,00</strong>
-</div>
-</section>
-
-<section class="menu">
-
-<button onclick="abrirEntrada()">
-💰 Adicionar entrada
-</button>
-
-<button onclick="abrirDespesa()">
-🛒 Adicionar despesa
-</button>
-
-<button onclick="abrirContas()">
-📅 Minhas contas
-</button>
-
-<button onclick="mostrarHistorico()">
-📋 Histórico
-</button>
-  <button onclick="mostrarRelatorio()">
-📊 Relatório mensal
-</button>
-<button onclick="abrirCalculadora()">
-🧮 Calculadora
-</button>
-
- <button onclick="abrirMetaEconomia()">
-🎯 Meta de economia
-</button> 
-  <button onclick="abrirConfiguracoes()">
-⚙️ Configurações
-</button>
   <section id="configuracoes" class="formulario">
 
 <h2>Configurações</h2>
