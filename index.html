@@ -2251,7 +2251,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";  
+  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6xK5D1EIQq5uz9bUG3PD_dZOYiimD72g",
@@ -2345,6 +2345,59 @@ document
     }
 
   }); 
+    document
+  .getElementById("btnSair")
+  .addEventListener("click", async function() {
+
+    await signOut(auth);
+
+  });
+
+onAuthStateChanged(auth, function(usuario) {
+
+  const email =
+    document.getElementById("emailLogin");
+
+  const senha =
+    document.getElementById("senhaLogin");
+
+  const btnCriar =
+    document.getElementById("btnCriarConta");
+
+  const btnEntrar =
+    document.getElementById("btnEntrar");
+
+  const btnSair =
+    document.getElementById("btnSair");
+
+  const status =
+    document.getElementById("statusLogin");
+
+  if (usuario) {
+
+    email.style.display = "none";
+    senha.style.display = "none";
+    btnCriar.style.display = "none";
+    btnEntrar.style.display = "none";
+    btnSair.style.display = "block";
+
+    status.textContent =
+      "Conectado como: " + usuario.email;
+
+  } else {
+
+    email.style.display = "block";
+    senha.style.display = "block";
+    btnCriar.style.display = "block";
+    btnEntrar.style.display = "block";
+    btnSair.style.display = "none";
+
+    status.textContent =
+      "Você não está conectado.";
+
+  }
+
+});
 
 </script>
 </body>
