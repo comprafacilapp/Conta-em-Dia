@@ -2259,7 +2259,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-   import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+   import { getFirestore, doc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -2305,6 +2305,51 @@ const db = getFirestore(app);
     );
 
   }
+
+};
+    window.escutarDespesasNaNuvem = function() {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  const referencia =
+    collection(
+      db,
+      "usuarios",
+      usuario.uid,
+      "despesas"
+    );
+
+  onSnapshot(referencia, function(snapshot) {
+
+    const despesasNuvem = [];
+
+    snapshot.forEach(function(documento) {
+
+      despesasNuvem.push(documento.data());
+
+    });
+
+    despesasNuvem.forEach(function(despesaNuvem) {
+
+      const jaExiste =
+        despesas.some(function(despesaLocal) {
+          return despesaLocal.id === despesaNuvem.id;
+        });
+
+      if (!jaExiste) {
+        despesas.push(despesaNuvem);
+      }
+
+    });
+
+    salvarDados();
+    atualizarTela();
+
+  });
 
 };
 document
@@ -2425,6 +2470,7 @@ onAuthStateChanged(auth, function(usuario) {
 
     status.textContent =
       "Conectado como: " + usuario.email;
+    window.escutarDespesasNaNuvem();
 
   } else {
 
