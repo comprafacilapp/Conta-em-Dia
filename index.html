@@ -2127,7 +2127,11 @@ excluir.innerText = "🗑️ Excluir";
 excluir.onclick = function() {
 
 if (confirm("Excluir esta despesa?")) {
-alert("ID da despesa: " + item.id);
+alert(
+  "ID: " + item.id +
+  " | Função excluir: " +
+  typeof window.excluirDespesaNaNuvem
+);
 if (
   item.id &&
   window.excluirDespesaNaNuvem
