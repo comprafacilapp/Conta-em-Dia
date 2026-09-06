@@ -2127,11 +2127,7 @@ excluir.innerText = "🗑️ Excluir";
 excluir.onclick = function() {
 
 if (confirm("Excluir esta despesa?")) {
-alert(
-  "ID: " + item.id +
-  " | Função excluir: " +
-  typeof window.excluirDespesaNaNuvem
-);
+
 if (
   item.id &&
   window.excluirDespesaNaNuvem
@@ -2328,7 +2324,7 @@ if (!usuario) {
 }
 
   try {
-alert("Vou excluir da nuvem: " + id);
+
     await deleteDoc(
       doc(
         db,
@@ -2338,13 +2334,11 @@ alert("Vou excluir da nuvem: " + id);
         id
       )
     );
-alert("Firebase confirmou a exclusão.");
+
     console.log(
       "Despesa excluída da nuvem."
     );
-
   } catch (erro) {
-alert("Erro Firebase: " + erro.message);
     console.error(
       "Erro ao excluir despesa da nuvem:",
       erro
