@@ -2251,6 +2251,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+  import { getFirestore } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";  
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -2264,7 +2265,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
-
+const db = getFirestore(app);
 document
   .getElementById("btnCriarConta")
   .addEventListener("click", async function() {
