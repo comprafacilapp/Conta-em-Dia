@@ -478,7 +478,7 @@ id="dataDespesa"
 type="date"
 >
 
-<button onclick="salvarDespesa()">
+<button id="btnSalvarDespesa" onclick="salvarDespesa()">
 Salvar despesa
 </button>
 
@@ -1031,7 +1031,7 @@ document.getElementById(
 "block";
 
 }
-
+let despesaEmEdicao = null;
 
 function salvarDespesa() {
 
@@ -1067,24 +1067,51 @@ return;
 }
 
 
-const novaDespesa = {
+if (despesaEmEdicao) {
 
-id: Date.now().toString(),
+  despesaEmEdicao.descricao = descricao;
+  despesaEmEdicao.valor = valor;
+  despesaEmEdicao.data = data;
 
-descricao: descricao,
+  if (
+    despesaEmEdicao.id &&
+    window.salvarDespesaNaNuvem
+  ) {
+    window.salvarDespesaNaNuvem(
+      despesaEmEdicao
+    );
+  }
 
-valor: valor,
+  despesaEmEdicao = null;
 
-data: data
+  document.getElementById(
+    "btnSalvarDespesa"
+  ).innerText =
+    "Salvar despesa";
 
-};
+} else {
 
-despesas.push(novaDespesa);
+  const novaDespesa = {
 
-if (window.salvarDespesaNaNuvem) {
-  window.salvarDespesaNaNuvem(novaDespesa);
+    id: Date.now().toString(),
+
+    descricao: descricao,
+
+    valor: valor,
+
+    data: data
+
+  };
+
+  despesas.push(novaDespesa);
+
+  if (window.salvarDespesaNaNuvem) {
+    window.salvarDespesaNaNuvem(
+      novaDespesa
+    );
+  }
+
 }
-
 
 salvarDados();
 
@@ -1990,7 +2017,6 @@ let editar =
 document.createElement("button");
 
 editar.innerText = "✏️ Editar";
-
 editar.onclick = function() {
 
 let novaDescricao =
@@ -2014,13 +2040,7 @@ novaDescricao;
 
 item.valor =
 Number(novoValor);
-if (
-  item.id &&
-  window.salvarDespesaNaNuvem
-) {
- alert("Vou atualizar na nuvem: " + item.id);
-  window.salvarDespesaNaNuvem(item);
-}
+
 salvarDados();
 mostrarHistoricoInterno();
 atualizarTela();
@@ -2093,41 +2113,35 @@ let editar =
 document.createElement("button");
 
 editar.innerText = "✏️ Editar";
-
 editar.onclick = function() {
 
-let novaDescricao =
-prompt(
-"Editar descrição:",
-item.descricao
-);
+  despesaEmEdicao = item;
 
-if (novaDescricao === null) return;
+  document.getElementById(
+    "descricaoDespesa"
+  ).value = item.descricao;
 
-let novoValor =
-prompt(
-"Editar valor:",
-item.valor
-);
+  document.getElementById(
+    "valorDespesa"
+  ).value = item.valor;
 
-if (novoValor === null) return;
+  document.getElementById(
+    "dataDespesa"
+  ).value = item.data || "";
 
-item.descricao =
-novaDescricao;
+  document.getElementById(
+    "btnSalvarDespesa"
+  ).innerText =
+    "Salvar alteração";
 
-item.valor =
-Number(novoValor);
-if (
-  item.id &&
-  window.salvarDespesaNaNuvem
-) {
-  window.salvarDespesaNaNuvem(item);
-}
-salvarDados();
-mostrarHistoricoInterno();
-atualizarTela();
+  fecharTudo();
+
+  document.getElementById(
+    "despesa"
+  ).style.display = "block";
 
 };
+
 
 
 let excluir =
