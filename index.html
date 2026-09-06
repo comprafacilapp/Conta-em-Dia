@@ -2322,9 +2322,10 @@ const db = getFirestore(app);
 
   const usuario = auth.currentUser;
 
-  if (!usuario) {
-    return;
-  }
+if (!usuario) {
+  alert("ERRO: Firebase não encontrou usuário conectado.");
+  return;
+}
 
   try {
 alert("Vou excluir da nuvem: " + id);
