@@ -2116,7 +2116,12 @@ novaDescricao;
 
 item.valor =
 Number(novoValor);
-
+if (
+  item.id &&
+  window.salvarDespesaNaNuvem
+) {
+  window.salvarDespesaNaNuvem(item);
+}
 salvarDados();
 mostrarHistoricoInterno();
 atualizarTela();
