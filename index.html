@@ -2327,7 +2327,7 @@ const db = getFirestore(app);
   }
 
   try {
-
+alert("Vou excluir da nuvem: " + id);
     await deleteDoc(
       doc(
         db,
@@ -2337,13 +2337,13 @@ const db = getFirestore(app);
         id
       )
     );
-
+alert("Firebase confirmou a exclusão.");
     console.log(
       "Despesa excluída da nuvem."
     );
 
   } catch (erro) {
-
+alert("Erro Firebase: " + erro.message);
     console.error(
       "Erro ao excluir despesa da nuvem:",
       erro
