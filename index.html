@@ -2251,6 +2251,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
+ import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";   
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6xK5D1EIQq5uz9bUG3PD_dZOYiimD72g",
@@ -2262,6 +2263,48 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+document
+  .getElementById("btnCriarConta")
+  .addEventListener("click", async function() {
+
+    const email =
+      document.getElementById("emailLogin").value.trim();
+
+    const senha =
+      document.getElementById("senhaLogin").value;
+
+    const status =
+      document.getElementById("statusLogin");
+
+    if (!email || !senha) {
+      status.textContent =
+        "Preencha o e-mail e a senha.";
+      return;
+    }
+
+    try {
+
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      );
+
+      status.textContent =
+        "Conta criada com sucesso!";
+
+    } catch (erro) {
+
+      status.textContent =
+        "Não foi possível criar a conta.";
+
+      console.error(erro);
+
+    }
+
+  });
 
 </script>
 </body>
