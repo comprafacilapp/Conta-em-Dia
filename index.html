@@ -2128,6 +2128,13 @@ excluir.onclick = function() {
 
 if (confirm("Excluir esta despesa?")) {
 
+if (
+  item.id &&
+  window.excluirDespesaNaNuvem
+) {
+  window.excluirDespesaNaNuvem(item.id);
+}
+
 despesas.splice(
 despesas.indexOf(item),
 1
@@ -2259,7 +2266,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-   import { getFirestore, doc, setDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+   import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -2307,6 +2314,40 @@ const db = getFirestore(app);
   }
 
 };
+    window.excluirDespesaNaNuvem = async function(id) {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "despesas",
+        id
+      )
+    );
+
+    console.log(
+      "Despesa excluída da nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir despesa da nuvem:",
+      erro
+    );
+
+  }
+
+};
     window.escutarDespesasNaNuvem = function() {
 
   const usuario = auth.currentUser;
@@ -2325,29 +2366,52 @@ const db = getFirestore(app);
 
   onSnapshot(referencia, function(snapshot) {
 
-    const despesasNuvem = [];
+   const despesasNuvem = [];
 
-    snapshot.forEach(function(documento) {
+snapshot.forEach(function(documento) {
 
-      despesasNuvem.push(documento.data());
+  despesasNuvem.push({
+    ...documento.data(),
+    id: documento.id
+  });
 
+});
+
+despesas = despesas.filter(function(despesaLocal) {
+
+  if (!despesaLocal.id) {
+    return true;
+  }
+
+  return despesasNuvem.some(function(despesaNuvem) {
+    return despesaNuvem.id === despesaLocal.id;
+  });
+
+});
+
+despesasNuvem.forEach(function(despesaNuvem) {
+
+  const indiceExistente =
+    despesas.findIndex(function(despesaLocal) {
+      return despesaLocal.id === despesaNuvem.id;
     });
 
-    despesasNuvem.forEach(function(despesaNuvem) {
+  if (indiceExistente === -1) {
 
-      const jaExiste =
-        despesas.some(function(despesaLocal) {
-          return despesaLocal.id === despesaNuvem.id;
-        });
+    despesas.push(despesaNuvem);
 
-      if (!jaExiste) {
-        despesas.push(despesaNuvem);
-      }
+  } else {
 
-    });
+    despesas[indiceExistente] =
+      despesaNuvem;
 
-    salvarDados();
-    atualizarTela();
+  }
+
+});
+
+salvarDados();
+mostrarHistoricoInterno();
+atualizarTela();
 
   });
 
