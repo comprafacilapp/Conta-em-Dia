@@ -990,7 +990,9 @@ return;
 }
 
 
-entradas.push({
+const novaEntrada = {
+
+id: Date.now().toString(),
 
 descricao: descricao,
 
@@ -998,8 +1000,14 @@ valor: valor,
 
 data: data
 
-});
+};
 
+entradas.push(novaEntrada);
+if (window.salvarEntradaNaNuvem) {
+  window.salvarEntradaNaNuvem(
+    novaEntrada
+  );
+}
 
 salvarDados();
 
@@ -2056,7 +2064,14 @@ excluir.innerText = "🗑️ Excluir";
 excluir.onclick = function() {
 
 if (confirm("Excluir esta entrada?")) {
-
+if (
+  item.id &&
+  window.excluirEntradaNaNuvem
+) {
+  window.excluirEntradaNaNuvem(
+    item.id
+  );
+}
 entradas.splice(
 entradas.indexOf(item),
 1
@@ -2338,6 +2353,75 @@ const db = getFirestore(app);
   }
 
 };
+    window.salvarEntradaNaNuvem = async function(entrada) {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await setDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "entradas",
+        entrada.id
+      ),
+      entrada
+    );
+
+    console.log(
+      "Entrada sincronizada com a nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao sincronizar entrada:",
+      erro
+    );
+
+  }
+
+};
+   window.excluirEntradaNaNuvem = async function(id) {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "entradas",
+        id
+      )
+    );
+
+    console.log(
+      "Entrada excluída da nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir entrada da nuvem:",
+      erro
+    );
+
+  }
+
+}; 
     window.excluirDespesaNaNuvem = async function(id) {
 
   const usuario = auth.currentUser;
@@ -2435,6 +2519,74 @@ despesasNuvem.forEach(function(despesaNuvem) {
 salvarDados();
 mostrarHistoricoInterno();
 atualizarTela();
+
+  });
+
+};
+    window.escutarEntradasNaNuvem = function() {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  const referencia =
+    collection(
+      db,
+      "usuarios",
+      usuario.uid,
+      "entradas"
+    );
+
+  onSnapshot(referencia, function(snapshot) {
+
+    const entradasNuvem = [];
+
+    snapshot.forEach(function(documento) {
+
+      entradasNuvem.push({
+        ...documento.data(),
+        id: documento.id
+      });
+
+    });
+
+    entradas = entradas.filter(function(entradaLocal) {
+
+      if (!entradaLocal.id) {
+        return true;
+      }
+
+      return entradasNuvem.some(function(entradaNuvem) {
+        return entradaNuvem.id === entradaLocal.id;
+      });
+
+    });
+
+    entradasNuvem.forEach(function(entradaNuvem) {
+
+      const indiceExistente =
+        entradas.findIndex(function(entradaLocal) {
+          return entradaLocal.id === entradaNuvem.id;
+        });
+
+      if (indiceExistente === -1) {
+
+        entradas.push(entradaNuvem);
+
+      } else {
+
+        entradas[indiceExistente] =
+          entradaNuvem;
+
+      }
+
+    });
+
+    salvarDados();
+    mostrarHistoricoInterno();
+    atualizarTela();
 
   });
 
@@ -2558,7 +2710,7 @@ onAuthStateChanged(auth, function(usuario) {
     status.textContent =
       "Conectado como: " + usuario.email;
     window.escutarDespesasNaNuvem();
-
+window.escutarEntradasNaNuvem();
   } else {
 
     email.style.display = "block";
