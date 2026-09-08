@@ -521,11 +521,11 @@ id="dataConta"
 type="date"
 >
 
-<button onclick="salvarConta()">
+<button id="btnSalvarConta" onclick="salvarConta()">
 Salvar conta
 </button>
 
-<button class="fechar" onclick="fecharTudo()">
+<button class="fechar" onclick="cancelarEdicaoConta()">
 Fechar
 </button>
 
@@ -1040,7 +1040,7 @@ document.getElementById(
 
 }
 let despesaEmEdicao = null;
-
+let contaEmEdicao = null;
 function salvarDespesa() {
 
 let descricao =
@@ -1187,29 +1187,52 @@ return;
 }
 
 
+if (contaEmEdicao) {
 
- const novaConta = {
+  contaEmEdicao.nome = nome;
+  contaEmEdicao.valor = valor;
+  contaEmEdicao.data = data;
 
-id: Date.now().toString(),
+  if (
+    contaEmEdicao.id &&
+    window.salvarContaNaNuvem
+  ) {
+    window.salvarContaNaNuvem(
+      contaEmEdicao
+    );
+  }
 
-nome: nome,
+  contaEmEdicao = null;
+document.getElementById(
+  "btnSalvarConta"
+).innerText =
+  "Salvar conta";
+  
+} else {
 
-valor: valor,
+  const novaConta = {
 
-data: data,
+    id: Date.now().toString(),
 
-paga: false
+    nome: nome,
 
-};
+    valor: valor,
 
-contas.push(novaConta); 
+    data: data,
 
-if (window.salvarContaNaNuvem) {
-  window.salvarContaNaNuvem(
-    novaConta
-  );
+    paga: false
+
+  };
+
+  contas.push(novaConta);
+
+  if (window.salvarContaNaNuvem) {
+    window.salvarContaNaNuvem(
+      novaConta
+    );
+  }
+
 }
-
 salvarDados();
 
 atualizarTela();
@@ -1228,7 +1251,30 @@ document.getElementById(
 ).value = "";
 
 }
+function cancelarEdicaoConta() {
 
+  contaEmEdicao = null;
+
+  document.getElementById(
+    "btnSalvarConta"
+  ).innerText =
+    "Salvar conta";
+
+  document.getElementById(
+    "nomeConta"
+  ).value = "";
+
+  document.getElementById(
+    "valorConta"
+  ).value = "";
+
+  document.getElementById(
+    "dataConta"
+  ).value = "";
+
+  fecharTudo();
+
+}
 
 function mostrarContas() {
 
@@ -2260,31 +2306,29 @@ editar.innerText = "✏️ Editar";
 
 editar.onclick = function() {
 
-let novoNome =
-prompt(
-"Editar nome da conta:",
-item.nome
-);
+  contaEmEdicao = item;
+  
+document.getElementById(
+  "btnSalvarConta"
+).innerText =
+  "Salvar alteração";
+  document.getElementById(
+    "nomeConta"
+  ).value = item.nome;
 
-if (novoNome === null) return;
+  document.getElementById(
+    "valorConta"
+  ).value = item.valor;
 
-let novoValor =
-prompt(
-"Editar valor:",
-item.valor
-);
+  document.getElementById(
+    "dataConta"
+  ).value = item.data || "";
 
-if (novoValor === null) return;
+  fecharTudo();
 
-item.nome =
-novoNome;
-
-item.valor =
-Number(novoValor);
-
-salvarDados();
-mostrarHistoricoInterno();
-atualizarTela();
+  document
+  .getElementById("contas")
+  .classList.add("ativo");
 
 };
 
