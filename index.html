@@ -401,7 +401,6 @@ input {
 <button class="fechar" onclick="fecharTudo()">
 Fechar
 </button>
-
 </section>
 
 
@@ -435,14 +434,13 @@ id="dataEntrada"
 type="date"
 >
 
-<button onclick="salvarEntrada()">
+<button id="btnSalvarEntrada" onclick="salvarEntrada()">
 Salvar entrada
 </button>
 
-<button class="fechar" onclick="fecharTudo()">
+<button class="fechar" onclick="cancelarEdicaoEntrada()">
 Fechar
 </button>
-
 <div id="mensagemEntrada" class="mensagem"></div>
 
 </section>
@@ -989,26 +987,50 @@ return;
 
 }
 
+if (entradaEmEdicao) {
 
-const novaEntrada = {
+  entradaEmEdicao.descricao = descricao;
+  entradaEmEdicao.valor = valor;
+  entradaEmEdicao.data = data;
 
-id: Date.now().toString(),
+  if (
+    entradaEmEdicao.id &&
+    window.salvarEntradaNaNuvem
+  ) {
+    window.salvarEntradaNaNuvem(
+      entradaEmEdicao
+    );
+  }
 
-descricao: descricao,
+  entradaEmEdicao = null;
+  document.getElementById(
+  "btnSalvarEntrada"
+).innerText =
+  "Salvar entrada";
 
-valor: valor,
+} else {
 
-data: data
+  const novaEntrada = {
 
-};
+    id: Date.now().toString(),
 
-entradas.push(novaEntrada);
-if (window.salvarEntradaNaNuvem) {
-  window.salvarEntradaNaNuvem(
-    novaEntrada
-  );
+    descricao: descricao,
+
+    valor: valor,
+
+    data: data
+
+  };
+
+  entradas.push(novaEntrada);
+
+  if (window.salvarEntradaNaNuvem) {
+    window.salvarEntradaNaNuvem(
+      novaEntrada
+    );
+  }
+
 }
-
 salvarDados();
 
 atualizarTela();
@@ -1039,8 +1061,34 @@ document.getElementById(
 "block";
 
 }
+function cancelarEdicaoEntrada() {
+
+  entradaEmEdicao = null;
+
+  document.getElementById(
+    "btnSalvarEntrada"
+  ).innerText =
+    "Salvar entrada";
+
+  document.getElementById(
+    "descricaoEntrada"
+  ).value = "";
+
+  document.getElementById(
+    "valorEntrada"
+  ).value = "";
+
+  document.getElementById(
+    "dataEntrada"
+  ).value = "";
+
+  fecharTudo();
+
+}
+  
 let despesaEmEdicao = null;
 let contaEmEdicao = null;
+let entradaEmEdicao = null;  
 function salvarDespesa() {
 
 let descricao =
@@ -2098,36 +2146,34 @@ let editar =
 document.createElement("button");
 
 editar.innerText = "✏️ Editar";
+
 editar.onclick = function() {
 
-let novaDescricao =
-prompt(
-"Editar descrição:",
-item.descricao
-);
+  entradaEmEdicao = item;
 
-if (novaDescricao === null) return;
+  document.getElementById(
+  "btnSalvarEntrada"
+).innerText =
+  "Salvar alteração";
+  document.getElementById(
+    "descricaoEntrada"
+  ).value = item.descricao;
 
-let novoValor =
-prompt(
-"Editar valor:",
-item.valor
-);
+  document.getElementById(
+    "valorEntrada"
+  ).value = item.valor;
 
-if (novoValor === null) return;
+  document.getElementById(
+    "dataEntrada"
+  ).value = item.data || "";
 
-item.descricao =
-novaDescricao;
+  fecharTudo();
 
-item.valor =
-Number(novoValor);
-
-salvarDados();
-mostrarHistoricoInterno();
-atualizarTela();
+  document
+  .getElementById("entrada")
+  .classList.add("ativo");
 
 };
-
 
 let excluir =
 document.createElement("button");
