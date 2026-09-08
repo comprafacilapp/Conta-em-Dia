@@ -1187,17 +1187,28 @@ return;
 }
 
 
-contas.push({
+
+ const novaConta = {
+
+id: Date.now().toString(),
 
 nome: nome,
 
 valor: valor,
 
 data: data,
+
 paga: false
-});
 
+};
 
+contas.push(novaConta); 
+
+if (window.salvarContaNaNuvem) {
+  window.salvarContaNaNuvem(
+    novaConta
+  );
+}
 
 salvarDados();
 
@@ -1350,6 +1361,14 @@ botaoPagar.onclick = function() {
 conta.paga = true;
 conta.dataPagamento =
 new Date().toISOString().split("T")[0];
+  if (
+  conta.id &&
+  window.salvarContaNaNuvem
+) {
+  window.salvarContaNaNuvem(
+    conta
+  );
+}
 salvarDados();
 mostrarContas();
 atualizarTela();
@@ -1372,6 +1391,14 @@ botaoDesfazer.onclick = function() {
 conta.paga = false;
 
 conta.dataPagamento = "";
+  if (
+  conta.id &&
+  window.salvarContaNaNuvem
+) {
+  window.salvarContaNaNuvem(
+    conta
+  );
+}
 
 salvarDados();
 mostrarContas();
@@ -2270,7 +2297,14 @@ excluir.innerText = "🗑️ Excluir";
 excluir.onclick = function() {
 
 if (confirm("Excluir esta conta?")) {
-
+if (
+  item.id &&
+  window.excluirContaNaNuvem
+) {
+  window.excluirContaNaNuvem(
+    item.id
+  );
+}
 contas.splice(
 contas.indexOf(item),
 1
@@ -2388,6 +2422,41 @@ const db = getFirestore(app);
   }
 
 };
+   window.salvarContaNaNuvem = async function(conta) {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await setDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "contas",
+        conta.id
+      ),
+      conta
+    );
+
+    console.log(
+      "Conta sincronizada com a nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao sincronizar conta:",
+      erro
+    );
+
+  }
+
+}; 
    window.excluirEntradaNaNuvem = async function(id) {
 
   const usuario = auth.currentUser;
@@ -2422,6 +2491,40 @@ const db = getFirestore(app);
   }
 
 }; 
+    window.excluirContaNaNuvem = async function(id) {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await deleteDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "contas",
+        id
+      )
+    );
+
+    console.log(
+      "Conta excluída da nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir conta da nuvem:",
+      erro
+    );
+
+  }
+
+};
     window.excluirDespesaNaNuvem = async function(id) {
 
   const usuario = auth.currentUser;
@@ -2591,6 +2694,74 @@ atualizarTela();
   });
 
 };
+    window.escutarContasNaNuvem = function() {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  const referencia =
+    collection(
+      db,
+      "usuarios",
+      usuario.uid,
+      "contas"
+    );
+
+  onSnapshot(referencia, function(snapshot) {
+
+    const contasNuvem = [];
+
+    snapshot.forEach(function(documento) {
+
+      contasNuvem.push({
+        ...documento.data(),
+        id: documento.id
+      });
+
+    });
+
+    contas = contas.filter(function(contaLocal) {
+
+      if (!contaLocal.id) {
+        return true;
+      }
+
+      return contasNuvem.some(function(contaNuvem) {
+        return contaNuvem.id === contaLocal.id;
+      });
+
+    });
+
+    contasNuvem.forEach(function(contaNuvem) {
+
+      const indiceExistente =
+        contas.findIndex(function(contaLocal) {
+          return contaLocal.id === contaNuvem.id;
+        });
+
+      if (indiceExistente === -1) {
+
+        contas.push(contaNuvem);
+
+      } else {
+
+        contas[indiceExistente] =
+          contaNuvem;
+
+      }
+
+    });
+
+    salvarDados();
+    mostrarContas();
+    atualizarTela();
+
+  });
+
+};
 document
   .getElementById("btnCriarConta")
   .addEventListener("click", async function() {
@@ -2711,6 +2882,7 @@ onAuthStateChanged(auth, function(usuario) {
       "Conectado como: " + usuario.email;
     window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
+    window.escutarContasNaNuvem();
   } else {
 
     email.style.display = "block";
