@@ -1366,7 +1366,32 @@ if (contaEmEdicao) {
       contaEmEdicao
     );
   }
+if (
+  recorrente === false &&
+  contaEmEdicao.idOrigemRecorrencia
+) {
 
+  let idOriginal =
+  contaEmEdicao.idOrigemRecorrencia;
+
+  let contaOriginal =
+  contas.find(function(conta) {
+    return conta.id === idOriginal;
+  });
+
+  if (contaOriginal) {
+
+    contaOriginal.recorrente = false;
+
+    if (window.salvarContaNaNuvem) {
+      window.salvarContaNaNuvem(
+        contaOriginal
+      );
+    }
+
+  }
+
+}
   contaEmEdicao = null;
 document.getElementById(
   "btnSalvarConta"
