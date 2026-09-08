@@ -518,6 +518,13 @@ step="0.01"
 id="dataConta"
 type="date"
 >
+  <label>
+<input
+id="contaRecorrente"
+type="checkbox"
+>
+Repetir esta conta todo mês
+</label>
 
 <button id="btnSalvarConta" onclick="salvarConta()">
 Salvar conta
@@ -728,7 +735,7 @@ ano + "-" + mes;
 
 let mesSelecionado =
 campoMes.value;
-
+gerarContasRecorrentesDoMes();
 
 let totalEntradas = 0;
 
@@ -816,12 +823,113 @@ gastoHoje = saldo / 30;
 document.getElementById("gastoHoje")
 .innerText = dinheiro(gastoHoje);
 
-
 mostrarContas();
 mostrarLembretes();
 mostrarHistoricoInterno();
 atualizarMetaEconomia();
 }
+function gerarContasRecorrentesDoMes() {
+
+  let mesSelecionado =
+  document.getElementById(
+    "mesSelecionado"
+  ).value;
+
+  if (!mesSelecionado) {
+    return;
+  }
+   let contasRecorrentes =
+contas.filter(function(conta) {
+  return (
+    conta.recorrente === true &&
+    !conta.idOrigemRecorrencia
+  );
+});
+ contasRecorrentes.forEach(function(contaOriginal) {
+
+  if (!contaOriginal.data) {
+    return;
+  }
+ let diaVencimento =
+Number(
+  contaOriginal.data.split("-")[2]
+);
+
+let partesMes =
+mesSelecionado.split("-");
+
+let anoSelecionado =
+Number(partesMes[0]);
+
+let numeroMesSelecionado =
+Number(partesMes[1]);
+
+let ultimoDiaDoMes =
+new Date(
+  anoSelecionado,
+  numeroMesSelecionado,
+  0
+).getDate();
+
+let diaFinal =
+Math.min(
+  diaVencimento,
+  ultimoDiaDoMes
+);
+
+let dataDoMes =
+mesSelecionado +
+"-" +
+String(diaFinal).padStart(2, "0");
+   let mesOriginal =
+contaOriginal.data.substring(0, 7);
+
+if (mesSelecionado <= mesOriginal) {
+  return;
+}
+ 
+  let idOrigemRecorrencia =
+contaOriginal.idOrigemRecorrencia || contaOriginal.id;
+
+let idRecorrente =
+idOrigemRecorrencia + "_" + mesSelecionado;
+
+let jaExiste =
+contas.some(function(conta) {
+  return conta.id === idRecorrente;
+});
+   if (jaExiste) {
+  return;
+}
+
+let novaContaRecorrente = {
+
+  id: idRecorrente,
+
+  idOrigemRecorrencia: idOrigemRecorrencia,
+
+  nome: contaOriginal.nome,
+
+  valor: contaOriginal.valor,
+
+  data: dataDoMes,
+
+  paga: false,
+
+  recorrente: true
+
+};
+
+contas.push(novaContaRecorrente);
+ if (window.salvarContaNaNuvem) {
+  window.salvarContaNaNuvem(
+    novaContaRecorrente
+  );
+}  
+}); 
+  salvarDados();
+  }
+ 
 function mostrarLembretes() {
 
 let area =
@@ -1219,6 +1327,10 @@ let data =
 document.getElementById(
 "dataConta"
 ).value;
+let recorrente =
+document.getElementById(
+"contaRecorrente"
+).checked;  
 
 
 if (
@@ -1240,6 +1352,11 @@ if (contaEmEdicao) {
   contaEmEdicao.nome = nome;
   contaEmEdicao.valor = valor;
   contaEmEdicao.data = data;
+  contaEmEdicao.recorrente = recorrente;
+  if (!contaEmEdicao.id) {
+  contaEmEdicao.id =
+  Date.now().toString();
+}
 
   if (
     contaEmEdicao.id &&
@@ -1268,7 +1385,8 @@ document.getElementById(
 
     data: data,
 
-    paga: false
+    paga: false,
+   recorrente: recorrente 
 
   };
 
@@ -1297,6 +1415,9 @@ document.getElementById(
 document.getElementById(
 "dataConta"
 ).value = "";
+document.getElementById(
+"contaRecorrente"
+).checked = false;  
 
 }
 function cancelarEdicaoConta() {
@@ -1319,7 +1440,9 @@ function cancelarEdicaoConta() {
   document.getElementById(
     "dataConta"
   ).value = "";
-
+document.getElementById(
+  "contaRecorrente"
+).checked = false;
   fecharTudo();
 
 }
@@ -2370,6 +2493,9 @@ document.getElementById(
     "dataConta"
   ).value = item.data || "";
 
+  document.getElementById(
+  "contaRecorrente"
+).checked = item.recorrente === true;
   fecharTudo();
 
   document
