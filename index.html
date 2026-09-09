@@ -829,6 +829,9 @@ mostrarHistoricoInterno();
 atualizarMetaEconomia();
 }
 function gerarContasRecorrentesDoMes() {
+    if (!usuarioPremium()) {
+    return;
+  }
 
   let mesSelecionado =
   document.getElementById(
@@ -1331,7 +1334,21 @@ let recorrente =
 document.getElementById(
 "contaRecorrente"
 ).checked;  
+if (
+  recorrente &&
+  !usuarioPremium()
+) {
 
+  alert(
+    "⭐ Contas recorrentes são um recurso Premium."
+  );
+
+  document.getElementById(
+    "contaRecorrente"
+  ).checked = false;
+
+  return;
+}
 
 if (
 nome === "" ||
