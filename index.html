@@ -2655,7 +2655,7 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-   import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+   import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 
 const firebaseConfig = {
@@ -3194,7 +3194,7 @@ document
 
   });
 
-onAuthStateChanged(auth, function(usuario) {
+onAuthStateChanged(auth, async function(usuario) {
 
   const email =
     document.getElementById("emailLogin");
@@ -3222,11 +3222,65 @@ onAuthStateChanged(auth, function(usuario) {
     btnEntrar.style.display = "none";
     btnSair.style.display = "block";
 
-    status.textContent =
-      "Conectado como: " + usuario.email;
-    window.escutarDespesasNaNuvem();
+   
+   status.textContent =
+  "Conectado como: " + usuario.email;
+
+try {
+
+  const documentoUsuario =
+    await getDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid
+      )
+    );
+
+  if (documentoUsuario.exists()) {
+
+    const dadosUsuario =
+      documentoUsuario.data();
+
+    const planoFirebase =
+      dadosUsuario.plano || "gratis";
+
+    localStorage.setItem(
+      "planoContaEmDia",
+      planoFirebase
+    );
+
+    console.log(
+      "Plano carregado do Firebase:",
+      planoFirebase
+    );
+
+  } else {
+
+    localStorage.setItem(
+      "planoContaEmDia",
+      "gratis"
+    );
+
+  }
+
+} catch (erro) {
+
+  console.error(
+    "Erro ao carregar plano do Firebase:",
+    erro
+  );
+
+  localStorage.setItem(
+    "planoContaEmDia",
+    "gratis"
+  );
+
+}
+
+window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
-    window.escutarContasNaNuvem();
+window.escutarContasNaNuvem();
   } else {
 
     email.style.display = "block";
