@@ -2146,6 +2146,8 @@ function usuarioPremiumNuvem() {
   ) === "premium_nuvem";
 
 }
+  window.usuarioPremiumNuvem =
+usuarioPremiumNuvem;
 function alternarPlanoTeste() {
 
   let plano =
@@ -2666,6 +2668,9 @@ const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 const db = getFirestore(app);
     window.salvarDespesaNaNuvem = async function(despesa) {
+        if (!usuarioPremiumNuvem()) {
+    return;
+  }
 
   const usuario = auth.currentUser;
 
@@ -2699,6 +2704,9 @@ const db = getFirestore(app);
 
 };
     window.salvarEntradaNaNuvem = async function(entrada) {
+        if (!usuarioPremiumNuvem()) {
+    return;
+  }
 
   const usuario = auth.currentUser;
 
@@ -2740,7 +2748,13 @@ const db = getFirestore(app);
   if (!usuario) {
     return;
   }
-
+     
+if (
+  localStorage.getItem("planoContaEmDia")
+  !== "premium_nuvem"
+) {
+  return;
+}
   try {
 
     await setDoc(
@@ -2769,6 +2783,9 @@ const db = getFirestore(app);
 
 }; 
    window.excluirEntradaNaNuvem = async function(id) {
+       if (!usuarioPremiumNuvem()) {
+    return;
+  }
 
   const usuario = auth.currentUser;
 
@@ -2803,6 +2820,9 @@ const db = getFirestore(app);
 
 }; 
     window.excluirContaNaNuvem = async function(id) {
+       if (!usuarioPremiumNuvem()) {
+    return;
+  } 
 
   const usuario = auth.currentUser;
 
@@ -2837,7 +2857,9 @@ const db = getFirestore(app);
 
 };
     window.excluirDespesaNaNuvem = async function(id) {
-
+if (!usuarioPremiumNuvem()) {
+  return;
+}
   const usuario = auth.currentUser;
 
 if (!usuario) {
@@ -2870,6 +2892,9 @@ if (!usuario) {
 
 };
     window.escutarDespesasNaNuvem = function() {
+      if (!usuarioPremiumNuvem()) {
+  return;
+}
 
   const usuario = auth.currentUser;
 
@@ -2938,7 +2963,9 @@ atualizarTela();
 
 };
     window.escutarEntradasNaNuvem = function() {
-
+if (!usuarioPremiumNuvem()) {
+  return;
+}
   const usuario = auth.currentUser;
 
   if (!usuario) {
@@ -3006,6 +3033,9 @@ atualizarTela();
 
 };
     window.escutarContasNaNuvem = function() {
+      if (!usuarioPremiumNuvem()) {
+  return;
+}
 
   const usuario = auth.currentUser;
 
