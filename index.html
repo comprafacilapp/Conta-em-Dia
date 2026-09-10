@@ -3127,14 +3127,26 @@ document
 
     try {
 
-      await createUserWithEmailAndPassword(
-        auth,
-        email,
-        senha
-      );
+     const credencial =
+  await createUserWithEmailAndPassword(
+    auth,
+    email,
+    senha
+  );
 
-      status.textContent =
-        "Conta criada com sucesso!";
+await setDoc(
+  doc(
+    db,
+    "usuarios",
+    credencial.user.uid
+  ),
+  {
+    plano: "gratis"
+  }
+);
+
+status.textContent =
+  "Conta criada com sucesso!"; 
 
     } catch (erro) {
 
