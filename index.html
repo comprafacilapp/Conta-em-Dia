@@ -522,6 +522,7 @@ type="date"
 <input
 id="contaRecorrente"
 type="checkbox"
+onchange="verificarRecorrenciaPremium()"
 >
 Repetir esta conta todo mês
 </label>
@@ -1310,7 +1311,23 @@ document.getElementById(
 "block";
 
 }
+function verificarRecorrenciaPremium() {
 
+  let campo =
+  document.getElementById("contaRecorrente");
+
+  if (
+    campo.checked &&
+    !usuarioPremium()
+  ) {
+
+    campo.checked = false;
+
+    alert(
+      "⭐ Contas recorrentes são um recurso Premium."
+    );
+  }
+}
 
 function salvarConta() {
 
