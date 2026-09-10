@@ -2125,28 +2125,64 @@ document
   .getElementById("resultadoCalculadora")
   .innerText =
   "Resultado: " + dinheiro(resultado);
+  }
 
-}
 
 function usuarioPremium() {
 
-  return localStorage.getItem("planoContaEmDia") === "premium";
+  let plano =
+  localStorage.getItem("planoContaEmDia");
+
+  return (
+    plano === "premium" ||
+    plano === "premium_nuvem"
+  );
 
 }
+function usuarioPremiumNuvem() {
 
+  return localStorage.getItem(
+    "planoContaEmDia"
+  ) === "premium_nuvem";
+
+}
 function alternarPlanoTeste() {
 
-  if (usuarioPremium()) {
+  let plano =
+  localStorage.getItem("planoContaEmDia") || "gratis";
 
-    localStorage.setItem("planoContaEmDia", "gratis");
+  if (plano === "gratis") {
 
-    alert("🧪 Modo de teste: GRÁTIS ativado.");
+    localStorage.setItem(
+      "planoContaEmDia",
+      "premium"
+    );
+
+    alert(
+      "⭐ Modo de teste: PREMIUM ativado."
+    );
+
+  } else if (plano === "premium") {
+
+    localStorage.setItem(
+      "planoContaEmDia",
+      "premium_nuvem"
+    );
+
+    alert(
+      "☁️ Modo de teste: PREMIUM NUVEM ativado."
+    );
 
   } else {
 
-    localStorage.setItem("planoContaEmDia", "premium");
+    localStorage.setItem(
+      "planoContaEmDia",
+      "gratis"
+    );
 
-    alert("⭐ Modo de teste: PREMIUM ativado.");
+    alert(
+      "🧪 Modo de teste: GRÁTIS ativado."
+    );
 
   }
 
