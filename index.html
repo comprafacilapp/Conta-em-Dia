@@ -2166,9 +2166,12 @@ document
 
 function usuarioPremium() {
 
-  if (usuarioAdministrador()) {
-    return true;
-  }
+ if (
+  window.usuarioAdministrador &&
+  window.usuarioAdministrador()
+) {
+  return true;
+}
 
   let plano =
   localStorage.getItem("planoContaEmDia");
@@ -2181,10 +2184,12 @@ function usuarioPremium() {
 }
 function usuarioPremiumNuvem() {
 
-  if (usuarioAdministrador()) {
-    return true;
-  }
-
+ if (
+  window.usuarioAdministrador &&
+  window.usuarioAdministrador()
+) {
+  return true;
+}
   return localStorage.getItem(
     "planoContaEmDia"
   ) === "premium_nuvem";
@@ -2239,7 +2244,7 @@ window.escutarContasNaNuvem();
 }
 
 function mostrarRelatorio() {
-
+alert("Teste relatório abriu");
   if (!usuarioPremium()) {
 
     alert("⭐ Relatório mensal é um recurso Premium.");
@@ -2733,6 +2738,8 @@ function usuarioAdministrador() {
   );
 
 }
+   window.usuarioAdministrador =
+usuarioAdministrador; 
     window.salvarMetaEconomiaNaNuvem = async function(valor) {
 
   if (!usuarioPremiumNuvem()) {
