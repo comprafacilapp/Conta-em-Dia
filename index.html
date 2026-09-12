@@ -1041,6 +1041,17 @@ document
 .getElementById("entrada")
 .classList.add("ativo");
 
+document
+.getElementById("entrada")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
+
+document
+.getElementById("descricaoEntrada")
+.focus();
+
 }
 
 
