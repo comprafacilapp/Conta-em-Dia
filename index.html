@@ -301,6 +301,13 @@ input {
   <button id="btnEntrar">
     Entrar
   </button>
+    <button
+  id="btnEsqueciSenha"
+  type="button"
+  style="background:none; border:none; font-size:14px; opacity:0.75;"
+>
+  Esqueci minha senha
+</button>
 
   <button id="btnSair" style="display:none;">
     Sair
@@ -2719,8 +2726,7 @@ navigator.serviceWorker.register("./service-worker.js");
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
    import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-  import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-
+ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 const firebaseConfig = {
   apiKey: "AIzaSyC6xK5D1EIQq5uz9bUG3PD_dZOYiimD72g",
   authDomain: "conta-em-dia-7abda.firebaseapp.com",
@@ -3358,6 +3364,44 @@ status.textContent =
     }
 
   }); 
+    document
+  .getElementById("btnEsqueciSenha")
+  .addEventListener("click", async function() {
+
+    const email =
+      document.getElementById("emailLogin").value.trim();
+
+    const status =
+      document.getElementById("statusLogin");
+
+    if (!email) {
+
+      status.textContent =
+        "Digite seu e-mail para recuperar a senha.";
+
+      return;
+    }
+
+    try {
+
+      await sendPasswordResetEmail(
+        auth,
+        email
+      );
+
+      status.textContent =
+        "Enviamos um e-mail para redefinir sua senha.";
+
+    } catch (erro) {
+
+      status.textContent =
+        "Não foi possível enviar a recuperação de senha.";
+
+      console.error(erro);
+
+    }
+
+  });
     document
   .getElementById("btnSair")
   .addEventListener("click", async function() {
