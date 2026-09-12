@@ -1988,7 +1988,9 @@ localStorage.setItem(
 "metaEconomia",
 valor
 );
-
+if (window.salvarMetaEconomiaNaNuvem) {
+  window.salvarMetaEconomiaNaNuvem(valor);
+}
 document
 .getElementById("resultadoMetaEconomia")
 .innerText =
@@ -2174,6 +2176,7 @@ function alternarPlanoTeste() {
    window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
 window.escutarContasNaNuvem(); 
+ window.escutarMetaEconomiaNaNuvem();   
     alert(
       "☁️ Modo de teste: PREMIUM NUVEM ativado."
     );
@@ -2670,6 +2673,89 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 const db = getFirestore(app);
+    window.salvarMetaEconomiaNaNuvem = async function(valor) {
+
+  if (!usuarioPremiumNuvem()) {
+    return;
+  }
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  try {
+
+    await setDoc(
+      doc(
+        db,
+        "usuarios",
+        usuario.uid,
+        "configuracoes",
+        "metaEconomia"
+      ),
+      {
+        valor: Number(valor)
+      }
+    );
+
+    console.log(
+      "Meta de economia sincronizada com a nuvem."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao sincronizar meta de economia:",
+      erro
+    );
+
+  }
+
+};
+    window.escutarMetaEconomiaNaNuvem = function() {
+
+  if (!usuarioPremiumNuvem()) {
+    return;
+  }
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+    return;
+  }
+
+  const referencia =
+    doc(
+      db,
+      "usuarios",
+      usuario.uid,
+      "configuracoes",
+      "metaEconomia"
+    );
+
+  onSnapshot(referencia, function(snapshot) {
+
+    if (!snapshot.exists()) {
+      return;
+    }
+
+    const dados = snapshot.data();
+
+    const valor =
+      Number(dados.valor) || 0;
+
+    localStorage.setItem(
+      "metaEconomia",
+      valor
+    );
+
+    atualizarMetaEconomia();
+
+  });
+
+};
     window.salvarDespesaNaNuvem = async function(despesa) {
         if (!usuarioPremiumNuvem()) {
     return;
@@ -3293,6 +3379,7 @@ try {
 window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
 window.escutarContasNaNuvem();
+window.escutarMetaEconomiaNaNuvem();    
   } else {
 
     email.style.display = "block";
