@@ -441,7 +441,6 @@ Salvar entrada
 <button class="fechar" onclick="cancelarEdicaoEntrada()">
 Fechar
 </button>
-<div id="mensagemEntrada" class="mensagem"></div>
 
 </section>
 
@@ -1178,35 +1177,7 @@ if (entradaEmEdicao) {
 }
 salvarDados();
 alert("Entrada salva com sucesso!");
-document.getElementById(
-"mensagemEntrada"
-).innerText =
-"✅ Entrada salva com sucesso!";
 
-document.getElementById(
-"mensagemEntrada"
-).style.display =
-"block";
-
-document.getElementById(
-"mensagemEntrada"
-).style.color =
-"black";
-
-document.getElementById(
-"mensagemEntrada"
-).style.background =
-"yellow";
-
-document.getElementById(
-"mensagemEntrada"
-).style.position =
-"relative";
-
-document.getElementById(
-"mensagemEntrada"
-).style.zIndex =
-"9999";
 atualizarTela();
 
 
@@ -1222,17 +1193,6 @@ document.getElementById(
 "dataEntrada"
 ).value = "";
 
-
-document.getElementById(
-"mensagemEntrada"
-).innerText =
-"Entrada salva com sucesso!";
-
-
-document.getElementById(
-"mensagemEntrada"
-).style.display =
-"block";
 
 }
 function cancelarEdicaoEntrada() {
