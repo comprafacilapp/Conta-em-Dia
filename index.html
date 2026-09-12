@@ -399,6 +399,13 @@ input {
 <button class="fechar" onclick="fecharTudo()">
 Fechar
 </button>
+ <button
+  id="btnSairConfiguracoes"
+  onclick="sairDaConta()"
+  style="margin-top:20px; font-size:14px; opacity:0.7;"
+>
+🚪 Sair da minha conta
+</button>   
 </section>
 
 
@@ -3358,6 +3365,26 @@ status.textContent =
     await signOut(auth);
 
   });
+window.sairDaConta = async function() {
+
+  try {
+
+    await signOut(auth);
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao sair da conta:",
+      erro
+    );
+
+    alert(
+      "Não foi possível sair da conta."
+    );
+
+  }
+
+};    
 
 onAuthStateChanged(auth, async function(usuario) {
 
