@@ -276,6 +276,61 @@ input {
 #btnEsqueciSenha {
   width: auto;
 }
+/* PAINEL FINANCEIRO */
+
+.painel-financeiro {
+  background: #f7f7f7;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.filtro-mes {
+  margin-bottom: 14px;
+}
+
+.filtro-mes label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.filtro-mes input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+#lembretesContas {
+  margin-top: 10px;
+}
+
+.saldo {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.saldo span {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.saldo strong {
+  font-size: 26px;
+}
+
+.resumo {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.resumo .card {
+  margin: 0;
+  text-align: center;
+}
   
 </style><meta name="theme-color" content="#1f6f5c">
 </head>
@@ -329,6 +384,7 @@ input {
 </section>
 <div id="areaAplicativo">
 <main>
+<div class="painel-financeiro">  
 <section class="filtro-mes">
 
   <label for="mesSelecionado">
@@ -369,7 +425,7 @@ input {
 <strong id="totalContas">R$ 0,00</strong>
 </div>
 </section>
-
+</div>
 <section class="menu">
 
 <button onclick="abrirEntrada()">
