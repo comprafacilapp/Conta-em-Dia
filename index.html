@@ -309,7 +309,7 @@ input {
   <p id="statusLogin"></p>
 
 </section>
-
+<div id="areaAplicativo">
 <main>
 <section class="filtro-mes">
 
@@ -3380,6 +3380,10 @@ onAuthStateChanged(auth, async function(usuario) {
     document.getElementById("statusLogin");
 
   if (usuario) {
+    
+    document.getElementById("areaLogin").style.display = "none";
+document.getElementById("areaAplicativo").style.display = "block";
+    
     if (usuario.uid === ADMIN_UID) {
 
   localStorage.setItem(
@@ -3388,7 +3392,7 @@ onAuthStateChanged(auth, async function(usuario) {
   );
 
 } else {
-
+      
   localStorage.setItem(
     "planoContaEmDia",
     "gratis"
@@ -3475,6 +3479,8 @@ window.escutarEntradasNaNuvem();
 window.escutarContasNaNuvem();
 window.escutarMetaEconomiaNaNuvem();    
   } else {
+    document.getElementById("areaLogin").style.display = "block";
+document.getElementById("areaAplicativo").style.display = "none";
 
     email.style.display = "block";
     senha.style.display = "block";
