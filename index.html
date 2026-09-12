@@ -231,56 +231,70 @@ input {
 .entrada {
   color: #16834b;
 }
+/* TELA DE LOGIN */
 
-.despesa {
-  color: #c0392b;
-}
-  .filtro-mes {
-  margin-bottom: 15px;
-  padding: 12px;
-  background: white;
-  border-radius: 12px;
-}
-
-.filtro-mes label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 8px;
+.tela-login {
+  min-height: 70vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
-.filtro-mes input {
+.login-card {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-#lembretesContas {
-  margin-top: 12px;
-  padding: 14px;
-  background: #ffffff;
-  border: 1px solid #d8dde2;
-  border-radius: 12px;
+  max-width: 380px;
+  background: white;
+  border-radius: 16px;
+  padding: 28px 22px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.10);
   text-align: center;
-  font-weight: bold;
-  line-height: 1.6;
 }
-</style>
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#1f6f5c">
+
+.login-card h1 {
+  margin-bottom: 6px;
+}
+
+.login-subtitulo {
+  margin-top: 0;
+  margin-bottom: 22px;
+  color: #666;
+}
+
+.login-card input {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 12px;
+}
+
+.login-card button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+#btnEsqueciSenha {
+  width: auto;
+}
+  
+</style><meta name="theme-color" content="#1f6f5c">
 </head>
 
 <body>
 
 <div class="app">
-<header>
+<header id="cabecalhoPrincipal">
 <h1>Conta em Dia</h1>
 <p>Organize sua vida financeira</p>
 </header>
-  <section id="areaLogin" style="padding: 16px 20px;">
+ <section id="areaLogin" class="tela-login">
 
-  <h2>Minha conta</h2>
+  <div class="login-card">
+
+    <h1>Conta em Dia</h1>
+
+    <p class="login-subtitulo">
+      Organize sua vida financeira
+    </p>
 
   <input
     type="email"
@@ -310,7 +324,7 @@ input {
 </button>
 
   <p id="statusLogin"></p>
-
+  </div>
 </section>
 <div id="areaAplicativo">
 <main>
@@ -3441,7 +3455,7 @@ onAuthStateChanged(auth, async function(usuario) {
     
     document.getElementById("areaLogin").style.display = "none";
 document.getElementById("areaAplicativo").style.display = "block";
-    
+document.getElementById("cabecalhoPrincipal").style.display = "block";    
     if (usuario.uid === ADMIN_UID) {
 
   localStorage.setItem(
@@ -3537,7 +3551,7 @@ window.escutarMetaEconomiaNaNuvem();
   } else {
     document.getElementById("areaLogin").style.display = "block";
 document.getElementById("areaAplicativo").style.display = "none";
-
+document.getElementById("cabecalhoPrincipal").style.display = "none";
     email.style.display = "block";
     senha.style.display = "block";
     btnCriar.style.display = "block";
