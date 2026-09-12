@@ -1311,7 +1311,7 @@ if (despesaEmEdicao) {
 }
 
 salvarDados();
-
+alert("Despesa salva com sucesso!");
 atualizarTela();
 
 
@@ -1488,6 +1488,7 @@ document.getElementById(
 
 }
 salvarDados();
+alert("Conta salva com sucesso!");
 
 atualizarTela();
 
@@ -2021,14 +2022,9 @@ if (window.salvarMetaEconomiaNaNuvem) {
   window.salvarMetaEconomiaNaNuvem(valor);
 }
 atualizarMetaEconomia();
+    
+alert("Meta salva com sucesso!");
 
-document
-.getElementById("resultadoMetaEconomia")
-.innerHTML =
-"✅ Meta salva com sucesso!<br><br>" +
-document
-.getElementById("resultadoMetaEconomia")
-.innerHTML;
 }
   function atualizarMetaEconomia() {
 
