@@ -301,7 +301,23 @@ input {
 }
 
 #lembretesContas {
-  margin-top: 10px;
+  margin-top: 8px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+}
+
+.lembrete-item {
+  padding: 7px 8px;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.lembrete-ok {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 7px;
 }
 
 .saldo {
@@ -1081,26 +1097,29 @@ vencemEmBreve++;
 let texto = "";
 
 if (atrasadas > 0) {
-texto +=
-"⚠️ " + atrasadas +
-" conta(s) atrasada(s)<br>";
+  texto +=
+  '<div class="lembrete-item">⚠️ ' +
+  atrasadas +
+  ' atrasada(s)</div>';
 }
 
 if (vencemHoje > 0) {
-texto +=
-"🔔 " + vencemHoje +
-" conta(s) vence(m) hoje<br>";
+  texto +=
+  '<div class="lembrete-item">🔔 ' +
+  vencemHoje +
+  ' vence(m) hoje</div>';
 }
 
 if (vencemEmBreve > 0) {
-texto +=
-"📅 " + vencemEmBreve +
-" conta(s) vence(m) nos próximos 3 dias";
+  texto +=
+  '<div class="lembrete-item">📅 ' +
+  vencemEmBreve +
+  ' próximos 3 dias</div>';
 }
 
 if (texto === "") {
-texto =
-"✅ Nenhuma conta urgente no momento.";
+  texto =
+  '<div class="lembrete-ok">✅ Nenhuma conta urgente</div>';
 }
 
 area.innerHTML = texto;
