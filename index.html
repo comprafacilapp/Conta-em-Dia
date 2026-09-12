@@ -1755,7 +1755,6 @@ lista.appendChild(item);
 
 }
 
-
 function mostrarHistorico() {
 
 fecharTudo();
@@ -1765,6 +1764,13 @@ document
 .classList.add("ativo");
 
 mostrarHistoricoInterno();
+
+document
+.getElementById("historico")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
 
 }
 function abrirCalculadora() {
@@ -1804,7 +1810,16 @@ document
 .innerText =
 "Meta salva: " + dinheiro(metaSalva);
 }
-    
+ document
+.getElementById("metaEconomia")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
+
+document
+.getElementById("valorMetaEconomia")
+.focus();   
 }
     function abrirConfiguracoes() {
 
@@ -2357,6 +2372,12 @@ textoEntrada +
 "<div style='width:100%;padding:8px;background:#c0392b;color:white;'>" +
 textoSaida +
 "</div></div>";  
+  document
+.getElementById("relatorio")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
 }
 
 function compartilharResumo() {
