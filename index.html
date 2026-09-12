@@ -1991,11 +1991,15 @@ valor
 if (window.salvarMetaEconomiaNaNuvem) {
   window.salvarMetaEconomiaNaNuvem(valor);
 }
+atualizarMetaEconomia();
+
 document
 .getElementById("resultadoMetaEconomia")
-.innerText =
-"Meta salva: " + dinheiro(valor);
-atualizarMetaEconomia();
+.innerHTML =
+"✅ Meta salva com sucesso!<br><br>" +
+document
+.getElementById("resultadoMetaEconomia")
+.innerHTML;
 }
   function atualizarMetaEconomia() {
 
