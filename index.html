@@ -3380,6 +3380,21 @@ onAuthStateChanged(auth, async function(usuario) {
     document.getElementById("statusLogin");
 
   if (usuario) {
+    if (usuario.uid === ADMIN_UID) {
+
+  localStorage.setItem(
+    "planoContaEmDia",
+    "premium_nuvem"
+  );
+
+} else {
+
+  localStorage.setItem(
+    "planoContaEmDia",
+    "gratis"
+  );
+
+}
 
     email.style.display = "none";
     senha.style.display = "none";
