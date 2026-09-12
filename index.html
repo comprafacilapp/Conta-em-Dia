@@ -304,14 +304,10 @@ input {
     <button
   id="btnEsqueciSenha"
   type="button"
-  style="background:none; border:none; font-size:14px; opacity:0.75;"
+ style="background:none; border:none; color:#333; font-size:14px; opacity:0.75; cursor:pointer;"
 >
   Esqueci minha senha
 </button>
-
-  <button id="btnSair" style="display:none;">
-    Sair
-  </button>
 
   <p id="statusLogin"></p>
 
@@ -3402,13 +3398,7 @@ status.textContent =
     }
 
   });
-    document
-  .getElementById("btnSair")
-  .addEventListener("click", async function() {
-
-    await signOut(auth);
-
-  });
+   
 window.sairDaConta = async function() {
 
   try {
@@ -3444,9 +3434,6 @@ onAuthStateChanged(auth, async function(usuario) {
   const btnEntrar =
     document.getElementById("btnEntrar");
 
-  const btnSair =
-    document.getElementById("btnSair");
-
   const status =
     document.getElementById("statusLogin");
 
@@ -3475,9 +3462,7 @@ document.getElementById("areaAplicativo").style.display = "block";
     senha.style.display = "none";
     btnCriar.style.display = "none";
     btnEntrar.style.display = "none";
-    btnSair.style.display = "block";
-
-   
+  
    status.textContent =
   "Conectado como: " + usuario.email;
 
@@ -3557,8 +3542,7 @@ document.getElementById("areaAplicativo").style.display = "none";
     senha.style.display = "block";
     btnCriar.style.display = "block";
     btnEntrar.style.display = "block";
-    btnSair.style.display = "none";
-
+    
     status.textContent =
       "Você não está conectado.";
 
