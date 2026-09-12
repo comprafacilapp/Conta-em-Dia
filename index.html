@@ -394,9 +394,7 @@ input {
 <button onclick="restaurarBackup()">
 📂 Restaurar backup
 </button>
-    <button onclick="alternarPlanoTeste()">
-🧪 Alternar Grátis / Premium
-</button>
+   
 
 <button class="fechar" onclick="fecharTudo()">
 Fechar
@@ -2166,8 +2164,11 @@ document
   "Resultado: " + dinheiro(resultado);
   }
 
-
 function usuarioPremium() {
+
+  if (usuarioAdministrador()) {
+    return true;
+  }
 
   let plano =
   localStorage.getItem("planoContaEmDia");
@@ -2179,6 +2180,10 @@ function usuarioPremium() {
 
 }
 function usuarioPremiumNuvem() {
+
+  if (usuarioAdministrador()) {
+    return true;
+  }
 
   return localStorage.getItem(
     "planoContaEmDia"
@@ -2716,6 +2721,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 const db = getFirestore(app);
+    const ADMIN_UID = "3h25DxTSi0MudGh4yM8cetZlUNo2";
+
+function usuarioAdministrador() {
+
+  const usuario = auth.currentUser;
+
+  return (
+    usuario &&
+    usuario.uid === ADMIN_UID
+  );
+
+}
     window.salvarMetaEconomiaNaNuvem = async function(valor) {
 
   if (!usuarioPremiumNuvem()) {
@@ -3418,7 +3435,19 @@ try {
   );
 
 }
+if (usuario.uid === ADMIN_UID) {
 
+  localStorage.setItem(
+    "planoContaEmDia",
+    "premium_nuvem"
+  );
+
+  console.log(
+    "Administrador conectado: Premium Nuvem liberado."
+  );
+
+}
+    
 window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
 window.escutarContasNaNuvem();
