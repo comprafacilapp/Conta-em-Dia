@@ -1063,6 +1063,17 @@ document
 .getElementById("despesa")
 .classList.add("ativo");
 
+document
+.getElementById("despesa")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
+
+document
+.getElementById("descricaoDespesa")
+.focus();
+
 }
 
 
@@ -1073,6 +1084,17 @@ fecharTudo();
 document
 .getElementById("contas")
 .classList.add("ativo");
+
+document
+.getElementById("contas")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
+
+document
+.getElementById("nomeConta")
+.focus();
 
 }
 
