@@ -1245,13 +1245,14 @@ if (entradaEmEdicao) {
   entradaEmEdicao.data = data;
 
   if (
-    entradaEmEdicao.id &&
-    window.salvarEntradaNaNuvem
-  ) {
-    window.salvarEntradaNaNuvem(
-      entradaEmEdicao
-    );
-  }
+  usuarioPremiumNuvem() &&
+  entradaEmEdicao.id &&
+  window.salvarEntradaNaNuvem
+) {
+  window.salvarEntradaNaNuvem(
+    entradaEmEdicao
+  );
+}
 
   entradaEmEdicao = null;
   document.getElementById(
@@ -1275,11 +1276,14 @@ if (entradaEmEdicao) {
 
   entradas.push(novaEntrada);
 
-  if (window.salvarEntradaNaNuvem) {
-    window.salvarEntradaNaNuvem(
-      novaEntrada
-    );
-  }
+ if (
+  usuarioPremiumNuvem() &&
+  window.salvarEntradaNaNuvem
+) {
+  window.salvarEntradaNaNuvem(
+    novaEntrada
+  );
+}
 
 }
 salvarDados();
@@ -1370,14 +1374,15 @@ if (despesaEmEdicao) {
   despesaEmEdicao.valor = valor;
   despesaEmEdicao.data = data;
 
-  if (
-    despesaEmEdicao.id &&
-    window.salvarDespesaNaNuvem
-  ) {
-    window.salvarDespesaNaNuvem(
-      despesaEmEdicao
-    );
-  }
+ if (
+  usuarioPremiumNuvem() &&
+  despesaEmEdicao.id &&
+  window.salvarDespesaNaNuvem
+) {
+  window.salvarDespesaNaNuvem(
+    despesaEmEdicao
+  );
+}
 
   despesaEmEdicao = null;
 
@@ -1402,11 +1407,14 @@ if (despesaEmEdicao) {
 
   despesas.push(novaDespesa);
 
-  if (window.salvarDespesaNaNuvem) {
-    window.salvarDespesaNaNuvem(
-      novaDespesa
-    );
-  }
+  if (
+  usuarioPremiumNuvem() &&
+  window.salvarDespesaNaNuvem
+) {
+  window.salvarDespesaNaNuvem(
+    novaDespesa
+  );
+}
 
 }
 
@@ -1521,10 +1529,11 @@ if (contaEmEdicao) {
   Date.now().toString();
 }
 
-  if (
-    contaEmEdicao.id &&
-    window.salvarContaNaNuvem
-  ) {
+ if (
+  usuarioPremiumNuvem() &&
+  contaEmEdicao.id &&
+  window.salvarContaNaNuvem
+) {
     window.salvarContaNaNuvem(
       contaEmEdicao
     );
@@ -1546,7 +1555,10 @@ if (
 
     contaOriginal.recorrente = false;
 
-    if (window.salvarContaNaNuvem) {
+   if (
+  usuarioPremiumNuvem() &&
+  window.salvarContaNaNuvem
+) {
       window.salvarContaNaNuvem(
         contaOriginal
       );
@@ -1580,11 +1592,14 @@ document.getElementById(
 
   contas.push(novaConta);
 
-  if (window.salvarContaNaNuvem) {
-    window.salvarContaNaNuvem(
-      novaConta
-    );
-  }
+ if (
+  usuarioPremiumNuvem() &&
+  window.salvarContaNaNuvem
+) {
+  window.salvarContaNaNuvem(
+    novaConta
+  );
+}
 
 }
 salvarDados();
@@ -2328,7 +2343,6 @@ function alternarPlanoTeste() {
       "planoContaEmDia",
       "premium_nuvem"
     );
-
    window.escutarDespesasNaNuvem();
 window.escutarEntradasNaNuvem();
 window.escutarContasNaNuvem(); 
@@ -3013,10 +3027,7 @@ usuarioAdministrador;
     return;
   }
      
-if (
-  localStorage.getItem("planoContaEmDia")
-  !== "premium_nuvem"
-) {
+if (!usuarioPremiumNuvem()) {
   return;
 }
   try {
