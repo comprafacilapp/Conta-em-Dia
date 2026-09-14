@@ -3166,10 +3166,12 @@ if (!usuario) {
   }
 
 };
-    window.escutarDespesasNaNuvem = function() {
-      if (!usuarioPremiumNuvem()) {
-  return;
-}
+   
+window.escutarDespesasNaNuvem = async function() {
+
+  if (!usuarioPremiumNuvem()) {
+    return;
+  }
 
   const usuario = auth.currentUser;
 
@@ -3185,62 +3187,59 @@ if (!usuario) {
       "despesas"
     );
 
-  onSnapshot(referencia, function(snapshot) {
+  try {
 
-   const despesasNuvem = [];
+    const despesasLocais = [...despesas];
 
-snapshot.forEach(function(documento) {
+    for (const despesaLocal of despesasLocais) {
 
-  despesasNuvem.push({
-    ...documento.data(),
-    id: documento.id
-  });
+      if (!despesaLocal.id) {
+        continue;
+      }
 
-});
+      await window.salvarDespesaNaNuvem(
+        despesaLocal
+      );
 
-despesas = despesas.filter(function(despesaLocal) {
+    }
 
-  if (!despesaLocal.id) {
-    return true;
-  }
+    onSnapshot(referencia, function(snapshot) {
 
-  return despesasNuvem.some(function(despesaNuvem) {
-    return despesaNuvem.id === despesaLocal.id;
-  });
+      const despesasNuvem = [];
 
-});
+      snapshot.forEach(function(documento) {
 
-despesasNuvem.forEach(function(despesaNuvem) {
+        despesasNuvem.push(
+          documento.data()
+        );
 
-  const indiceExistente =
-    despesas.findIndex(function(despesaLocal) {
-      return despesaLocal.id === despesaNuvem.id;
+      });
+
+      despesas = despesasNuvem;
+
+      salvarDados();
+      atualizarTela();
+
     });
 
-  if (indiceExistente === -1) {
+  } catch (erro) {
 
-    despesas.push(despesaNuvem);
-
-  } else {
-
-    despesas[indiceExistente] =
-      despesaNuvem;
+    console.error(
+      "Erro ao iniciar sincronização de despesas:",
+      erro
+    );
 
   }
 
-});
-
-salvarDados();
-mostrarHistoricoInterno();
-atualizarTela();
-
-  });
-
 };
-    window.escutarEntradasNaNuvem = function() {
-if (!usuarioPremiumNuvem()) {
-  return;
-}
+
+
+window.escutarEntradasNaNuvem = async function() {
+
+  if (!usuarioPremiumNuvem()) {
+    return;
+  }
+
   const usuario = auth.currentUser;
 
   if (!usuario) {
@@ -3255,62 +3254,57 @@ if (!usuarioPremiumNuvem()) {
       "entradas"
     );
 
-  onSnapshot(referencia, function(snapshot) {
+  try {
 
-    const entradasNuvem = [];
+    const entradasLocais = [...entradas];
 
-    snapshot.forEach(function(documento) {
-
-      entradasNuvem.push({
-        ...documento.data(),
-        id: documento.id
-      });
-
-    });
-
-    entradas = entradas.filter(function(entradaLocal) {
+    for (const entradaLocal of entradasLocais) {
 
       if (!entradaLocal.id) {
-        return true;
+        continue;
       }
 
-      return entradasNuvem.some(function(entradaNuvem) {
-        return entradaNuvem.id === entradaLocal.id;
+      await window.salvarEntradaNaNuvem(
+        entradaLocal
+      );
+
+    }
+
+    onSnapshot(referencia, function(snapshot) {
+
+      const entradasNuvem = [];
+
+      snapshot.forEach(function(documento) {
+
+        entradasNuvem.push(
+          documento.data()
+        );
+
       });
 
-    });
+      entradas = entradasNuvem;
 
-    entradasNuvem.forEach(function(entradaNuvem) {
-
-      const indiceExistente =
-        entradas.findIndex(function(entradaLocal) {
-          return entradaLocal.id === entradaNuvem.id;
-        });
-
-      if (indiceExistente === -1) {
-
-        entradas.push(entradaNuvem);
-
-      } else {
-
-        entradas[indiceExistente] =
-          entradaNuvem;
-
-      }
+      salvarDados();
+      atualizarTela();
 
     });
 
-    salvarDados();
-    mostrarHistoricoInterno();
-    atualizarTela();
+  } catch (erro) {
 
-  });
+    console.error(
+      "Erro ao iniciar sincronização de entradas:",
+      erro
+    );
+
+  }
 
 };
-    window.escutarContasNaNuvem = function() {
-      if (!usuarioPremiumNuvem()) {
-  return;
-}
+
+window.escutarContasNaNuvem = async function() {
+
+  if (!usuarioPremiumNuvem()) {
+    return;
+  }
 
   const usuario = auth.currentUser;
 
@@ -3326,141 +3320,52 @@ if (!usuarioPremiumNuvem()) {
       "contas"
     );
 
-  onSnapshot(referencia, function(snapshot) {
+  try {
 
-    const contasNuvem = [];
+    const contasLocais = [...contas];
 
-    snapshot.forEach(function(documento) {
-
-      contasNuvem.push({
-        ...documento.data(),
-        id: documento.id
-      });
-
-    });
-
-    contas = contas.filter(function(contaLocal) {
+    for (const contaLocal of contasLocais) {
 
       if (!contaLocal.id) {
-        return true;
+        continue;
       }
 
-      return contasNuvem.some(function(contaNuvem) {
-        return contaNuvem.id === contaLocal.id;
-      });
-
-    });
-
-    contasNuvem.forEach(function(contaNuvem) {
-
-      const indiceExistente =
-        contas.findIndex(function(contaLocal) {
-          return contaLocal.id === contaNuvem.id;
-        });
-
-      if (indiceExistente === -1) {
-
-        contas.push(contaNuvem);
-
-      } else {
-
-        contas[indiceExistente] =
-          contaNuvem;
-
-      }
-
-    });
-
-    salvarDados();
-    mostrarContas();
-    atualizarTela();
-
-  });
-
-};
-document
-  .getElementById("btnCriarConta")
-  .addEventListener("click", async function() {
-
-    const email =
-      document.getElementById("emailLogin").value.trim();
-
-    const senha =
-      document.getElementById("senhaLogin").value;
-
-    const status =
-      document.getElementById("statusLogin");
-
-    if (!email || !senha) {
-      status.textContent =
-        "Preencha o e-mail e a senha.";
-      return;
-    }
-
-    try {
-
-     const credencial =
-  await createUserWithEmailAndPassword(
-    auth,
-    email,
-    senha
-  );
-
-await setDoc(
-  doc(
-    db,
-    "usuarios",
-    credencial.user.uid
-  ),
-  {
-    plano: "gratis"
-  }
-);
-
-status.textContent =
-  "Conta criada com sucesso!"; 
-
-    } catch (erro) {
-
-      status.textContent =
-        "Não foi possível criar a conta.";
-
-      console.error(erro);
-
-    }
-
-  });
-   document
-  .getElementById("btnEntrar")
-  .addEventListener("click", async function() {
-
-    const email =
-      document.getElementById("emailLogin").value.trim();
-
-    const senha =
-      document.getElementById("senhaLogin").value;
-
-    const status =
-      document.getElementById("statusLogin");
-
-    if (!email || !senha) {
-      status.textContent =
-        "Preencha o e-mail e a senha.";
-      return;
-    }
-
-    try {
-
-      await signInWithEmailAndPassword(
-        auth,
-        email,
-        senha
+      await window.salvarContaNaNuvem(
+        contaLocal
       );
 
-      status.textContent =
-        "Login realizado com sucesso!";
+    }
 
-    } catch (erro) {
+    onSnapshot(referencia, function(snapshot) {
+
+      const contasNuvem = [];
+
+      snapshot.forEach(function(documento) {
+
+        contasNuvem.push(
+          documento.data()
+        );
+
+      });
+
+      contas = contasNuvem;
+
+      salvarDados();
+      atualizarTela();
+
+    });
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao iniciar sincronização de contas:",
+      erro
+    );
+
+  }
+
+};
+    
 
       status.textContent =
         "E-mail ou senha incorretos.";
