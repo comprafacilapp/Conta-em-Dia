@@ -775,15 +775,39 @@ R$ 0,00
 
 <script>
 
-let entradas =
-JSON.parse(localStorage.getItem("entradasContaEmDia")) || [];
+let entradas = [];
+let despesas = [];
+let contas = [];
 
-let despesas =
-JSON.parse(localStorage.getItem("despesasContaEmDia")) || [];
+let usuarioDadosAtual = null;
 
-let contas =
-JSON.parse(localStorage.getItem("contasContaEmDia")) || [];
 
+window.carregarDadosDoUsuario = function(uid) {
+
+  usuarioDadosAtual = uid;
+
+  entradas =
+    JSON.parse(
+      localStorage.getItem(
+        "entradasContaEmDia_" + uid
+      )
+    ) || [];
+
+  despesas =
+    JSON.parse(
+      localStorage.getItem(
+        "despesasContaEmDia_" + uid
+      )
+    ) || [];
+
+  contas =
+    JSON.parse(
+      localStorage.getItem(
+        "contasContaEmDia_" + uid
+      )
+    ) || [];
+
+};
 
 function dinheiro(valor) {
 
@@ -800,20 +824,24 @@ currency: "BRL"
 
 function salvarDados() {
 
-localStorage.setItem(
-"entradasContaEmDia",
-JSON.stringify(entradas)
-);
+  if (!usuarioDadosAtual) {
+    return;
+  }
 
-localStorage.setItem(
-"despesasContaEmDia",
-JSON.stringify(despesas)
-);
+  localStorage.setItem(
+    "entradasContaEmDia_" + usuarioDadosAtual,
+    JSON.stringify(entradas)
+  );
 
-localStorage.setItem(
-"contasContaEmDia",
-JSON.stringify(contas)
-);
+  localStorage.setItem(
+    "despesasContaEmDia_" + usuarioDadosAtual,
+    JSON.stringify(despesas)
+  );
+
+  localStorage.setItem(
+    "contasContaEmDia_" + usuarioDadosAtual,
+    JSON.stringify(contas)
+  );
 
 }
 
@@ -3487,7 +3515,7 @@ onAuthStateChanged(auth, async function(usuario) {
     document.getElementById("statusLogin");
 
   if (usuario) {
-    
+    window.carregarDadosDoUsuario(usuario.uid);
     document.getElementById("areaLogin").style.display = "none";
 document.getElementById("areaAplicativo").style.display = "block";
 document.getElementById("cabecalhoPrincipal").style.display = "block";    
