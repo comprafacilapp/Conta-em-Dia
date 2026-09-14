@@ -3366,6 +3366,39 @@ window.escutarContasNaNuvem = async function() {
 
 };
     
+    document
+  .getElementById("btnEntrar")
+  .addEventListener("click", async function() {
+
+    const email =
+      document.getElementById("emailLogin").value.trim();
+
+    const senha =
+      document.getElementById("senhaLogin").value;
+
+    const status =
+      document.getElementById("statusLogin");
+
+    if (!email || !senha) {
+
+      status.textContent =
+        "Digite seu e-mail e sua senha.";
+
+      return;
+    }
+
+    try {
+
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        senha
+      );
+
+      status.textContent =
+        "Login realizado com sucesso.";
+
+    } catch (erro) {
 
       status.textContent =
         "E-mail ou senha incorretos.";
@@ -3374,7 +3407,8 @@ window.escutarContasNaNuvem = async function() {
 
     }
 
-  }); 
+  });
+
     document
   .getElementById("btnEsqueciSenha")
   .addEventListener("click", async function() {
