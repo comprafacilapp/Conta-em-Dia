@@ -807,6 +807,8 @@ window.carregarDadosDoUsuario = function(uid) {
       )
     ) || [];
 
+  atualizarTela();
+
 };
 
 function dinheiro(valor) {
@@ -3195,7 +3197,17 @@ if (!usuario) {
 
 };
    
+let cancelarEscutaDespesasNuvem = null;
+
 window.escutarDespesasNaNuvem = async function() {
+
+  if (cancelarEscutaDespesasNuvem) {
+
+    cancelarEscutaDespesasNuvem();
+
+    cancelarEscutaDespesasNuvem = null;
+
+  }
 
   if (!usuarioPremiumNuvem()) {
     return;
@@ -3231,24 +3243,25 @@ window.escutarDespesasNaNuvem = async function() {
 
     }
 
-    onSnapshot(referencia, function(snapshot) {
+    cancelarEscutaDespesasNuvem =
+      onSnapshot(referencia, function(snapshot) {
 
-      const despesasNuvem = [];
+        const despesasNuvem = [];
 
-      snapshot.forEach(function(documento) {
+        snapshot.forEach(function(documento) {
 
-        despesasNuvem.push(
-          documento.data()
-        );
+          despesasNuvem.push(
+            documento.data()
+          );
+
+        });
+
+        despesas = despesasNuvem;
+
+        salvarDados();
+        atualizarTela();
 
       });
-
-      despesas = despesasNuvem;
-
-      salvarDados();
-      atualizarTela();
-
-    });
 
   } catch (erro) {
 
@@ -3261,8 +3274,17 @@ window.escutarDespesasNaNuvem = async function() {
 
 };
 
+  let cancelarEscutaEntradasNuvem = null;
 
 window.escutarEntradasNaNuvem = async function() {
+
+  if (cancelarEscutaEntradasNuvem) {
+
+    cancelarEscutaEntradasNuvem();
+
+    cancelarEscutaEntradasNuvem = null;
+
+  }
 
   if (!usuarioPremiumNuvem()) {
     return;
@@ -3298,24 +3320,25 @@ window.escutarEntradasNaNuvem = async function() {
 
     }
 
-    onSnapshot(referencia, function(snapshot) {
+    cancelarEscutaEntradasNuvem =
+      onSnapshot(referencia, function(snapshot) {
 
-      const entradasNuvem = [];
+        const entradasNuvem = [];
 
-      snapshot.forEach(function(documento) {
+        snapshot.forEach(function(documento) {
 
-        entradasNuvem.push(
-          documento.data()
-        );
+          entradasNuvem.push(
+            documento.data()
+          );
+
+        });
+
+        entradas = entradasNuvem;
+
+        salvarDados();
+        atualizarTela();
 
       });
-
-      entradas = entradasNuvem;
-
-      salvarDados();
-      atualizarTela();
-
-    });
 
   } catch (erro) {
 
@@ -3327,8 +3350,17 @@ window.escutarEntradasNaNuvem = async function() {
   }
 
 };
+    let cancelarEscutaContasNuvem = null;
 
 window.escutarContasNaNuvem = async function() {
+
+  if (cancelarEscutaContasNuvem) {
+
+    cancelarEscutaContasNuvem();
+
+    cancelarEscutaContasNuvem = null;
+
+  }
 
   if (!usuarioPremiumNuvem()) {
     return;
@@ -3364,24 +3396,25 @@ window.escutarContasNaNuvem = async function() {
 
     }
 
-    onSnapshot(referencia, function(snapshot) {
+    cancelarEscutaContasNuvem =
+      onSnapshot(referencia, function(snapshot) {
 
-      const contasNuvem = [];
+        const contasNuvem = [];
 
-      snapshot.forEach(function(documento) {
+        snapshot.forEach(function(documento) {
 
-        contasNuvem.push(
-          documento.data()
-        );
+          contasNuvem.push(
+            documento.data()
+          );
+
+        });
+
+        contas = contasNuvem;
+
+        salvarDados();
+        atualizarTela();
 
       });
-
-      contas = contasNuvem;
-
-      salvarDados();
-      atualizarTela();
-
-    });
 
   } catch (erro) {
 
@@ -3393,7 +3426,6 @@ window.escutarContasNaNuvem = async function() {
   }
 
 };
-    
     document
   .getElementById("btnEntrar")
   .addEventListener("click", async function() {
@@ -3480,6 +3512,30 @@ window.sairDaConta = async function() {
 
   try {
 
+    if (cancelarEscutaDespesasNuvem) {
+
+      cancelarEscutaDespesasNuvem();
+
+      cancelarEscutaDespesasNuvem = null;
+
+    }
+
+    if (cancelarEscutaEntradasNuvem) {
+
+      cancelarEscutaEntradasNuvem();
+
+      cancelarEscutaEntradasNuvem = null;
+
+    }
+
+    if (cancelarEscutaContasNuvem) {
+
+      cancelarEscutaContasNuvem();
+
+      cancelarEscutaContasNuvem = null;
+
+    }
+
     await signOut(auth);
 
   } catch (erro) {
@@ -3495,7 +3551,7 @@ window.sairDaConta = async function() {
 
   }
 
-};    
+};
 
 onAuthStateChanged(auth, async function(usuario) {
 
