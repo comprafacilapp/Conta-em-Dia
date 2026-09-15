@@ -498,13 +498,22 @@ input {
 <button class="fechar" onclick="fecharTudo()">
 Fechar
 </button>
- <button
+
+<button
   id="btnSairConfiguracoes"
   onclick="sairDaConta()"
   style="margin-top:20px; font-size:14px; opacity:0.7;"
 >
 🚪 Sair da minha conta
-</button>   
+</button>
+
+<button
+  id="btnExcluirMinhaConta"
+  onclick="excluirMinhaConta()"
+  style="margin-top:10px; font-size:14px;"
+>
+🗑️ Excluir minha conta
+</button>
 </section>
 
 
@@ -2864,9 +2873,9 @@ navigator.serviceWorker.register("./service-worker.js");
   <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-   import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
- import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
-const firebaseConfig = {
+  import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+  const firebaseConfig = {  
   apiKey: "AIzaSyC6xK5D1EIQq5uz9bUG3PD_dZOYiimD72g",
   authDomain: "conta-em-dia-7abda.firebaseapp.com",
   projectId: "conta-em-dia-7abda",
@@ -3507,7 +3516,131 @@ window.escutarContasNaNuvem = async function() {
     }
 
   });
-   
+   window.excluirMinhaConta = async function() {
+
+  const usuario = auth.currentUser;
+
+  if (!usuario) {
+
+    alert(
+      "Nenhum usuário está conectado."
+    );
+
+    return;
+  }
+
+  const confirmarPrimeiro =
+    confirm(
+      "Tem certeza que deseja excluir sua conta?\n\n" +
+      "Esta ação apagará seus dados e não poderá ser desfeita."
+    );
+
+  if (!confirmarPrimeiro) {
+    return;
+  }
+
+  const confirmarNovamente =
+    confirm(
+      "ÚLTIMA CONFIRMAÇÃO:\n\n" +
+      "Deseja realmente excluir permanentemente sua conta?"
+    );
+
+  if (!confirmarNovamente) {
+    return;
+  }
+
+  const uid = usuario.uid;
+
+  try {
+
+    const colecoes = [
+      "entradas",
+      "despesas",
+      "contas",
+      "configuracoes"
+    ];
+
+    for (const nomeColecao of colecoes) {
+
+      const referencia =
+        collection(
+          db,
+          "usuarios",
+          uid,
+          nomeColecao
+        );
+
+      const documentos =
+        await getDocs(referencia);
+
+      for (const documento of documentos.docs) {
+
+        await deleteDoc(
+          doc(
+            db,
+            "usuarios",
+            uid,
+            nomeColecao,
+            documento.id
+          )
+        );
+
+      }
+
+    }
+
+    await deleteDoc(
+      doc(
+        db,
+        "usuarios",
+        uid
+      )
+    );
+
+    localStorage.removeItem(
+      "entradasContaEmDia_" + uid
+    );
+
+    localStorage.removeItem(
+      "despesasContaEmDia_" + uid
+    );
+
+    localStorage.removeItem(
+      "contasContaEmDia_" + uid
+    );
+
+    await deleteUser(usuario);
+
+    alert(
+      "Sua conta e seus dados foram excluídos."
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir conta:",
+      erro
+    );
+
+    if (
+      erro.code ===
+      "auth/requires-recent-login"
+    ) {
+
+      alert(
+        "Por segurança, entre novamente na sua conta e tente excluir outra vez."
+      );
+
+      return;
+    }
+
+    alert(
+      "Não foi possível excluir sua conta. Nenhum outro usuário foi afetado."
+    );
+
+  }
+
+};
 window.sairDaConta = async function() {
 
   try {
@@ -3524,73 +3657,7 @@ window.sairDaConta = async function() {
 
       cancelarEscutaEntradasNuvem();
 
-      cancelarEscutaEntradasNuvem = null;
-
-    }
-
-    if (cancelarEscutaContasNuvem) {
-
-      cancelarEscutaContasNuvem();
-
-      cancelarEscutaContasNuvem = null;
-
-    }
-
-    await signOut(auth);
-
-  } catch (erro) {
-
-    console.error(
-      "Erro ao sair da conta:",
-      erro
-    );
-
-    alert(
-      "Não foi possível sair da conta."
-    );
-
-  }
-
-};
-
-onAuthStateChanged(auth, async function(usuario) {
-
-  const email =
-    document.getElementById("emailLogin");
-
-  const senha =
-    document.getElementById("senhaLogin");
-
-  const btnCriar =
-    document.getElementById("btnCriarConta");
-
-  const btnEntrar =
-    document.getElementById("btnEntrar");
-
-  const status =
-    document.getElementById("statusLogin");
-
-  if (usuario) {
-    window.carregarDadosDoUsuario(usuario.uid);
-    document.getElementById("areaLogin").style.display = "none";
-document.getElementById("areaAplicativo").style.display = "block";
-document.getElementById("cabecalhoPrincipal").style.display = "block";    
-    if (usuario.uid === ADMIN_UID) {
-
-  localStorage.setItem(
-    "planoContaEmDia",
-    "premium_nuvem"
-  );
-
-} else {
-      
-  localStorage.setItem(
-    "planoContaEmDia",
-    "gratis"
-  );
-
-}
-
+  Sair da conta
     email.style.display = "none";
     senha.style.display = "none";
     btnCriar.style.display = "none";
