@@ -3657,92 +3657,184 @@ window.sairDaConta = async function() {
 
       cancelarEscutaEntradasNuvem();
 
-  Sair da conta
-    email.style.display = "none";
-    senha.style.display = "none";
-    btnCriar.style.display = "none";
-    btnEntrar.style.display = "none";
-  
-   status.textContent =
-  "Conectado como: " + usuario.email;
+      cancelarEscutaEntradasNuvem = null;
 
-try {
+    }
 
-  const documentoUsuario =
-    await getDoc(
-      doc(
-        db,
-        "usuarios",
-        usuario.uid
-      )
+    if (cancelarEscutaContasNuvem) {
+
+      cancelarEscutaContasNuvem();
+
+      cancelarEscutaContasNuvem = null;
+
+    }
+
+    await signOut(auth);
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao sair da conta:",
+      erro
     );
 
-  if (documentoUsuario.exists()) {
-
-    const dadosUsuario =
-      documentoUsuario.data();
-
-    const planoFirebase =
-      dadosUsuario.plano || "gratis";
-
-    localStorage.setItem(
-      "planoContaEmDia",
-      planoFirebase
-    );
-
-    console.log(
-      "Plano carregado do Firebase:",
-      planoFirebase
-    );
-
-  } else {
-
-    localStorage.setItem(
-      "planoContaEmDia",
-      "gratis"
+    alert(
+      "Não foi possível sair da conta."
     );
 
   }
 
-} catch (erro) {
+};
 
-  console.error(
-    "Erro ao carregar plano do Firebase:",
-    erro
-  );
 
-  localStorage.setItem(
-    "planoContaEmDia",
-    "gratis"
-  );
+onAuthStateChanged(auth, async function(usuario) {
 
-}
-if (usuario.uid === ADMIN_UID) {
+  const email =
+    document.getElementById("emailLogin");
 
-  localStorage.setItem(
-    "planoContaEmDia",
-    "premium_nuvem"
-  );
+  const senha =
+    document.getElementById("senhaLogin");
 
-  console.log(
-    "Administrador conectado: Premium Nuvem liberado."
-  );
+  const btnCriar =
+    document.getElementById("btnCriarConta");
 
-}
-    
-window.escutarDespesasNaNuvem();
-window.escutarEntradasNaNuvem();
-window.escutarContasNaNuvem();
-window.escutarMetaEconomiaNaNuvem();    
+  const btnEntrar =
+    document.getElementById("btnEntrar");
+
+  const status =
+    document.getElementById("statusLogin");
+
+  if (usuario) {
+
+    window.carregarDadosDoUsuario(
+      usuario.uid
+    );
+
+    document.getElementById(
+      "areaLogin"
+    ).style.display = "none";
+
+    document.getElementById(
+      "areaAplicativo"
+    ).style.display = "block";
+
+    document.getElementById(
+      "cabecalhoPrincipal"
+    ).style.display = "block";
+
+    if (usuario.uid === ADMIN_UID) {
+
+      localStorage.setItem(
+        "planoContaEmDia",
+        "premium_nuvem"
+      );
+
+    } else {
+
+      localStorage.setItem(
+        "planoContaEmDia",
+        "gratis"
+      );
+
+    }
+
+    email.style.display = "none";
+    senha.style.display = "none";
+    btnCriar.style.display = "none";
+    btnEntrar.style.display = "none";
+
+    status.textContent =
+      "Conectado como: " + usuario.email;
+
+    try {
+
+      const documentoUsuario =
+        await getDoc(
+          doc(
+            db,
+            "usuarios",
+            usuario.uid
+          )
+        );
+
+      if (documentoUsuario.exists()) {
+
+        const dadosUsuario =
+          documentoUsuario.data();
+
+        const planoFirebase =
+          dadosUsuario.plano || "gratis";
+
+        localStorage.setItem(
+          "planoContaEmDia",
+          planoFirebase
+        );
+
+        console.log(
+          "Plano carregado do Firebase:",
+          planoFirebase
+        );
+
+      } else {
+
+        localStorage.setItem(
+          "planoContaEmDia",
+          "gratis"
+        );
+
+      }
+
+    } catch (erro) {
+
+      console.error(
+        "Erro ao carregar plano do Firebase:",
+        erro
+      );
+
+      localStorage.setItem(
+        "planoContaEmDia",
+        "gratis"
+      );
+
+    }
+
+    if (usuario.uid === ADMIN_UID) {
+
+      localStorage.setItem(
+        "planoContaEmDia",
+        "premium_nuvem"
+      );
+
+      console.log(
+        "Administrador conectado: Premium Nuvem liberado."
+      );
+
+    }
+
+    window.escutarDespesasNaNuvem();
+    window.escutarEntradasNaNuvem();
+    window.escutarContasNaNuvem();
+    window.escutarMetaEconomiaNaNuvem();
+
   } else {
-    document.getElementById("areaLogin").style.display = "block";
-document.getElementById("areaAplicativo").style.display = "none";
-document.getElementById("cabecalhoPrincipal").style.display = "none";
+
+    document.getElementById(
+      "areaLogin"
+    ).style.display = "block";
+
+    document.getElementById(
+      "areaAplicativo"
+    ).style.display = "none";
+
+    document.getElementById(
+      "cabecalhoPrincipal"
+    ).style.display = "none";
+
     email.style.display = "block";
     senha.style.display = "block";
     btnCriar.style.display = "block";
     btnEntrar.style.display = "block";
-    
+
   }
 
 });
