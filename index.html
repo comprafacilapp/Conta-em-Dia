@@ -508,12 +508,172 @@ Fechar
 </button>
 
 <button
+  id="btnPoliticaPrivacidade"
+  onclick="abrirPoliticaPrivacidade()"
+  style="margin-top:10px; font-size:14px;"
+>
+🔒 Política de Privacidade
+</button>
+
+<button
   id="btnExcluirMinhaConta"
   onclick="excluirMinhaConta()"
   style="margin-top:10px; font-size:14px;"
 >
 🗑️ Excluir minha conta
 </button>
+</section>
+
+
+<!-- POLÍTICA DE PRIVACIDADE -->
+
+<section
+  id="politicaPrivacidade"
+  class="formulario"
+  style="display:none;"
+>
+
+<h2>🔒 Política de Privacidade</h2>
+
+<p>
+O Conta em Dia respeita a privacidade dos usuários
+e utiliza somente os dados necessários para o
+funcionamento dos recursos oferecidos pelo aplicativo.
+</p>
+
+<h3>1. Dados utilizados pelo aplicativo</h3>
+
+<p>
+Para criar e acessar uma conta, o usuário fornece
+seu endereço de e-mail e senha. A autenticação é
+realizada por meio do Firebase Authentication,
+serviço fornecido pelo Google.
+</p>
+
+<p>
+O aplicativo também permite que o próprio usuário
+registre informações financeiras, como entradas,
+despesas, contas e metas de economia.
+</p>
+
+<h3>2. Armazenamento dos dados</h3>
+
+<p>
+Os dados financeiros podem ser armazenados
+localmente no dispositivo do usuário.
+</p>
+
+<p>
+Quando o usuário utiliza um plano com sincronização
+em nuvem, os dados compatíveis com esse recurso
+também podem ser armazenados no Firebase para
+permitir a sincronização entre dispositivos.
+</p>
+
+<h3>3. Uso das informações</h3>
+
+<p>
+As informações registradas são utilizadas para
+oferecer as funções do Conta em Dia, como controle
+financeiro, histórico, cálculos, contas, metas e
+sincronização de dados quando disponível.
+</p>
+
+<p>
+O Conta em Dia não utiliza os dados financeiros
+registrados pelo usuário para conceder crédito,
+realizar movimentações bancárias ou tomar decisões
+financeiras em nome do usuário.
+</p>
+
+<h3>4. Compartilhamento e serviços de terceiros</h3>
+
+<p>
+O aplicativo utiliza serviços do Firebase,
+fornecidos pelo Google, para recursos como
+autenticação e armazenamento em nuvem.
+</p>
+
+<p>
+Os dados poderão ser processados por esses serviços
+na medida necessária para o funcionamento dos
+recursos utilizados pelo usuário.
+</p>
+
+<h3>5. Segurança</h3>
+
+<p>
+São utilizados mecanismos de autenticação e regras
+de acesso para limitar o acesso aos dados associados
+à conta de cada usuário.
+</p>
+
+<p>
+Nenhum sistema conectado à internet pode garantir
+segurança absoluta. Por isso, o usuário também deve
+proteger sua senha e o acesso aos seus dispositivos.
+</p>
+
+<h3>6. Exclusão da conta e dos dados</h3>
+
+<p>
+O usuário pode solicitar a exclusão diretamente
+pelo aplicativo, utilizando a opção
+“Excluir minha conta” disponível em Configurações.
+</p>
+
+<p>
+Ao concluir a exclusão, os dados associados à conta
+que são mantidos pelo Conta em Dia são excluídos,
+juntamente com a conta de autenticação, conforme
+o funcionamento implementado no aplicativo.
+</p>
+
+<h3>7. Dados armazenados no dispositivo</h3>
+
+<p>
+O aplicativo utiliza armazenamento local do
+navegador ou dispositivo para manter dados e
+configurações necessários ao seu funcionamento.
+</p>
+
+<p>
+A remoção do aplicativo, a limpeza dos dados do
+navegador ou outras ações realizadas no dispositivo
+podem apagar informações armazenadas somente
+localmente.
+</p>
+
+<h3>8. Alterações nesta Política</h3>
+
+<p>
+Esta Política de Privacidade poderá ser atualizada
+quando houver mudanças no aplicativo, nos serviços
+utilizados ou nas práticas relacionadas aos dados.
+A versão disponibilizada pelo Conta em Dia deverá
+refletir as práticas em vigor.
+</p>
+
+<h3>9. Contato</h3>
+
+<p>
+O endereço de contato oficial para assuntos
+relacionados à privacidade será informado nesta
+Política antes da disponibilização pública do
+aplicativo.
+</p>
+
+<p>
+<strong>Última atualização: setembro de 2026.</strong>
+</p>
+
+<button
+  class="fechar"
+  onclick="fecharPoliticaPrivacidade()"
+>
+Fechar
+</button>
+
 </section>
 
 
@@ -1174,6 +1334,33 @@ document
 item.classList.remove("ativo");
 
 });
+
+}
+
+
+function abrirPoliticaPrivacidade() {
+
+fecharTudo();
+
+document
+.getElementById("politicaPrivacidade")
+.classList.add("ativo");
+
+document
+.getElementById("politicaPrivacidade")
+.scrollIntoView({
+  behavior: "smooth",
+  block: "start"
+});
+
+}
+
+
+function fecharPoliticaPrivacidade() {
+
+document
+.getElementById("politicaPrivacidade")
+.classList.remove("ativo");
 
 }
 
