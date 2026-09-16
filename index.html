@@ -276,8 +276,24 @@ input {
 #btnEsqueciSenha {
   width: auto;
 }
-/* PAINEL FINANCEIRO */
 
+/* ÁREA DE ANÚNCIO */
+
+#areaAnuncio {
+  margin: 10px 0;
+  padding: 10px;
+  min-height: 50px;
+  box-sizing: border-box;
+  border: 1px dashed #999;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 13px;
+  color: #666;
+  background: #f7f7f7;
+}
+
+/* PAINEL FINANCEIRO */
+  
 .painel-financeiro {
   background: #f7f7f7;
   border-radius: 16px;
@@ -451,6 +467,15 @@ input {
 </div>
 </section>
 </div>
+
+<!-- ÁREA DE ANÚNCIO - SOMENTE PLANO GRÁTIS -->
+
+<div
+  id="areaAnuncio"
+  style="display:none;"
+>
+</div>
+
 <section class="menu">
 
 <button onclick="abrirEntrada()">
@@ -2538,6 +2563,30 @@ function usuarioPremium() {
   );
 
 }
+  function atualizarAreaAnuncio() {
+
+  const area =
+    document.getElementById("areaAnuncio");
+
+  if (!area) {
+    return;
+  }
+
+  if (usuarioPremium()) {
+
+    area.style.display = "none";
+    area.innerHTML = "";
+
+  } else {
+
+    area.style.display = "block";
+
+    area.innerHTML =
+      "📢 Espaço reservado para anúncio";
+
+  }
+
+}
 function usuarioPremiumNuvem() {
 
  if (
@@ -4047,6 +4096,8 @@ onAuthStateChanged(auth, async function(usuario) {
       );
 
     }
+     atualizarAreaAnuncio();
+
 
     window.escutarDespesasNaNuvem();
     window.escutarEntradasNaNuvem();
