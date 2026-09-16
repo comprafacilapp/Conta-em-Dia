@@ -2165,7 +2165,7 @@ document
 "Resultado: R$ 0,00";
 
 }
-  function salvarMetaEconomia() {
+function salvarMetaEconomia() {
 
 let valor =
 Number(
@@ -2187,14 +2187,21 @@ localStorage.setItem(
 "metaEconomia",
 valor
 );
+
 if (window.salvarMetaEconomiaNaNuvem) {
   window.salvarMetaEconomiaNaNuvem(valor);
 }
+
 atualizarMetaEconomia();
+
+document
+.getElementById("valorMetaEconomia")
+.value = "";
     
 alert("Meta salva com sucesso!");
 
-}
+} 
+
   function atualizarMetaEconomia() {
 
 let meta =
