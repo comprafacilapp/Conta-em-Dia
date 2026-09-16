@@ -2874,7 +2874,17 @@ navigator.serviceWorker.register("./service-worker.js");
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
   import { getFirestore, doc, getDoc, getDocs, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
- import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, deleteUser } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+ import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  deleteUser,
+  EmailAuthProvider,
+  reauthenticateWithCredential
+} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
   const firebaseConfig = {  
   apiKey: "AIzaSyC6xK5D1EIQq5uz9bUG3PD_dZOYiimD72g",
   authDomain: "conta-em-dia-7abda.firebaseapp.com",
@@ -3549,9 +3559,34 @@ window.escutarContasNaNuvem = async function() {
     return;
   }
 
+  const senha =
+    prompt(
+      "Digite sua senha para confirmar a exclusão da conta:"
+    );
+
+  if (!senha) {
+
+    alert(
+      "Exclusão cancelada."
+    );
+
+    return;
+  }
+
   const uid = usuario.uid;
 
   try {
+
+    const credencial =
+      EmailAuthProvider.credential(
+        usuario.email,
+        senha
+      );
+
+    await reauthenticateWithCredential(
+      usuario,
+      credencial
+    );
 
     const colecoes = [
       "entradas",
@@ -3597,7 +3632,7 @@ window.escutarContasNaNuvem = async function() {
       )
     );
 
-    localStorage.removeItem(
+       localStorage.removeItem(
       "entradasContaEmDia_" + uid
     );
 
@@ -3609,8 +3644,15 @@ window.escutarContasNaNuvem = async function() {
       "contasContaEmDia_" + uid
     );
 
-    await deleteUser(usuario);
+    localStorage.removeItem(
+      "metaEconomia"
+    );
 
+    localStorage.removeItem(
+      "planoContaEmDia"
+    );
+
+    await deleteUser(usuario);
     alert(
       "Sua conta e seus dados foram excluídos."
     );
@@ -3624,18 +3666,20 @@ window.escutarContasNaNuvem = async function() {
 
     if (
       erro.code ===
-      "auth/requires-recent-login"
+      "auth/invalid-credential" ||
+      erro.code ===
+      "auth/wrong-password"
     ) {
 
       alert(
-        "Por segurança, entre novamente na sua conta e tente excluir outra vez."
+        "Senha incorreta. A conta não foi excluída."
       );
 
       return;
     }
 
     alert(
-      "Não foi possível excluir sua conta. Nenhum outro usuário foi afetado."
+      "Não foi possível excluir sua conta."
     );
 
   }
