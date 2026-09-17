@@ -317,14 +317,17 @@ input {
 }
 
 #lembretesContas {
-  margin-top: 8px;
+  margin-top: 6px;
+  margin-bottom: 6px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 6px;
 }
 
 .lembrete-item {
-  padding: 7px 8px;
+  background: #fff6d8;
+  border: 1px solid #f0d98a;
+  padding: 6px 8px;
   border-radius: 8px;
   text-align: center;
   font-size: 13px;
