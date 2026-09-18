@@ -2692,50 +2692,7 @@ function usuarioPremiumNuvem() {
 }
   window.usuarioPremiumNuvem =
 usuarioPremiumNuvem;
-function alternarPlanoTeste() {
 
-  let plano =
-  localStorage.getItem("planoContaEmDia") || "gratis";
-
-  if (plano === "gratis") {
-
-    localStorage.setItem(
-      "planoContaEmDia",
-      "premium"
-    );
-
-    alert(
-      "⭐ Modo de teste: PREMIUM ativado."
-    );
-
-  } else if (plano === "premium") {
-
-    localStorage.setItem(
-      "planoContaEmDia",
-      "premium_nuvem"
-    );
-   window.escutarDespesasNaNuvem();
-window.escutarEntradasNaNuvem();
-window.escutarContasNaNuvem(); 
- window.escutarMetaEconomiaNaNuvem();   
-    alert(
-      "☁️ Modo de teste: PREMIUM NUVEM ativado."
-    );
-
-  } else {
-
-    localStorage.setItem(
-      "planoContaEmDia",
-      "gratis"
-    );
-
-    alert(
-      "🧪 Modo de teste: GRÁTIS ativado."
-    );
-
-  }
-
-}
 
 function mostrarRelatorio() {
 
