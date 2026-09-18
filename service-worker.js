@@ -1,4 +1,4 @@
-const CACHE_NAME = "conta-em-dia-v3";
+const CACHE_NAME = "conta-em-dia-v4";
 
 const ARQUIVOS = [
   "./",
