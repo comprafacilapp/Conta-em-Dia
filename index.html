@@ -3203,6 +3203,32 @@ if ("serviceWorker" in navigator) {
 
       registro.update();
 
+      fetch("./index.html", {
+        cache: "no-store"
+      })
+      .then(function(resposta) {
+        return resposta.text();
+      })
+      .then(function(htmlNovo) {
+
+        if (
+          !htmlNovo.includes(
+            "TESTE V5"
+          )
+        ) {
+          return;
+        }
+
+        if (
+          !document.documentElement.innerHTML.includes(
+            "TESTE V5"
+          )
+        ) {
+          window.location.reload();
+        }
+
+      });
+
     });
 
 }
