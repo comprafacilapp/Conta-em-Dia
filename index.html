@@ -3,6 +3,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+<meta name="app-version" content="1.0.0">  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Conta em Dia</title>
@@ -439,7 +440,7 @@ margin-bottom: 4px;
 <div class="app">
 <header id="cabecalhoPrincipal">
 <h1>Conta em Dia</h1>
-<p>Organize sua vida financeira • TESTE V5</p>
+<p>Organize sua vida financeira</p>
 </header>
  <section id="areaLogin" class="tela-login">
 
@@ -3211,21 +3212,29 @@ if ("serviceWorker" in navigator) {
       })
       .then(function(htmlNovo) {
 
-        if (
-          !htmlNovo.includes(
-            "TESTE V5"
-          )
-        ) {
-          return;
-        }
+        const versaoAtual =
+  document.querySelector(
+    'meta[name="app-version"]'
+  )?.content;
 
-        if (
-          !document.documentElement.innerHTML.includes(
-            "TESTE V5"
-          )
-        ) {
-          window.location.reload();
-        }
+const documentoNovo =
+  new DOMParser().parseFromString(
+    htmlNovo,
+    "text/html"
+  );
+
+const versaoNova =
+  documentoNovo.querySelector(
+    'meta[name="app-version"]'
+  )?.content;
+
+if (
+  versaoNova &&
+  versaoAtual &&
+  versaoNova !== versaoAtual
+) {
+  window.location.reload();
+}
 
       });
 
