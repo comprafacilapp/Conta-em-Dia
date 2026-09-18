@@ -2219,7 +2219,11 @@ document
 .classList.add("ativo");
 
 let metaSalva =
-Number(localStorage.getItem("metaEconomia")) || 0;
+Number(
+  localStorage.getItem(
+    "metaEconomia_" + usuarioDadosAtual
+  )
+) || 0;
 
 if (metaSalva > 0) {
 
@@ -2485,8 +2489,8 @@ return;
 }
 
 localStorage.setItem(
-"metaEconomia",
-valor
+  "metaEconomia_" + usuarioDadosAtual,
+  valor
 );
 
 if (window.salvarMetaEconomiaNaNuvem) {
@@ -2506,8 +2510,11 @@ alert("Meta salva com sucesso!");
   function atualizarMetaEconomia() {
 
 let meta =
-Number(localStorage.getItem("metaEconomia")) || 0;
-
+Number(
+  localStorage.getItem(
+    "metaEconomia_" + usuarioDadosAtual
+  )
+) || 0;
 if (meta <= 0) {
 return;
 }
@@ -3281,6 +3288,7 @@ usuarioAdministrador;
   }
 
 };
+   let cancelarSincronizacaoMetaEconomia = null; 
     window.escutarMetaEconomiaNaNuvem = function() {
 
   if (!usuarioPremiumNuvem()) {
@@ -3292,7 +3300,10 @@ usuarioAdministrador;
   if (!usuario) {
     return;
   }
-
+if (cancelarSincronizacaoMetaEconomia) {
+  cancelarSincronizacaoMetaEconomia();
+  cancelarSincronizacaoMetaEconomia = null;
+}
   const referencia =
     doc(
       db,
@@ -3302,8 +3313,8 @@ usuarioAdministrador;
       "metaEconomia"
     );
 
+  cancelarSincronizacaoMetaEconomia =
   onSnapshot(referencia, function(snapshot) {
-
     if (!snapshot.exists()) {
       return;
     }
@@ -3314,12 +3325,11 @@ usuarioAdministrador;
       Number(dados.valor) || 0;
 
     localStorage.setItem(
-      "metaEconomia",
-      valor
-    );
+  "metaEconomia_" + usuario.uid,
+  valor
+);
 
-    atualizarMetaEconomia();
-
+atualizarMetaEconomia();
   });
 
 };
@@ -3974,8 +3984,8 @@ window.escutarContasNaNuvem = async function() {
     );
 
     localStorage.removeItem(
-      "metaEconomia"
-    );
+  "metaEconomia_" + uid
+);
 
     localStorage.removeItem(
       "planoContaEmDia"
@@ -4041,6 +4051,13 @@ window.sairDaConta = async function() {
       cancelarEscutaContasNuvem = null;
 
     }
+    if (cancelarSincronizacaoMetaEconomia) {
+
+  cancelarSincronizacaoMetaEconomia();
+
+  cancelarSincronizacaoMetaEconomia = null;
+
+}
     fecharTudo();
 
     await signOut(auth);
